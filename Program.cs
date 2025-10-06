@@ -1,4 +1,5 @@
 using Medical_center.Data;
+using Medical_center.Models; 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,19 +11,47 @@ namespace Medical_center
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+            // Зчитуємо з конфігурації, яку саме БД використовувати
+            var dbProvider = builder.Configuration.GetValue<string>("DatabaseProvider");
+
+            switch (dbProvider)
+            {
+                case "SqlServer":
+                    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                        options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection")));
+                    break;
+
+                case "Postgres":
+                    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                        options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
+                    break;
+
+                case "Sqlite":
+                    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                        options.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection")));
+                    break;
+
+                case "InMemory":
+                    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                        options.UseInMemoryDatabase("InMemoryDb"));
+                    break;
+
+                default:
+                    throw new Exception("DatabaseProvider is not configured correctly in appsettings.json");
+            }
+
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            // Використовуємо ApplicationUser, а не стандартний IdentityUser
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+                options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // Конфігурація пайплайну запитів
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
@@ -30,7 +59,6 @@ namespace Medical_center
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -39,6 +67,7 @@ namespace Medical_center
 
             app.UseRouting();
 
+            app.UseAuthentication(); // Додаємо перед Authorization
             app.UseAuthorization();
 
             app.MapControllerRoute(
