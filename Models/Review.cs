@@ -1,4 +1,6 @@
-﻿namespace Medical_center.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Medical_center.Models
 {
     public class Review
     {
@@ -10,6 +12,7 @@
         public int PatientId { get; set; }
         public Patient Patient { get; set; }
 
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Rating { get; set; } 
         public string? Comment { get; set; } 
         public DateTime DateCreated { get; set; } = DateTime.Now;

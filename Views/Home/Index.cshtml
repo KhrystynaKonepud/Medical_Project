@@ -1,8 +1,45 @@
-﻿@{
+﻿@using Medical_center.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Medical Center</h1>
+    <p>Онлайн-запис до лікаря, обмін медичними записами та комунікація пацієнт–лікар.</p>
+
+    @if (!SignInManager.IsSignedIn(User))
+    {
+        <a class="btn btn-primary m-1"
+           asp-area="Identity"
+           asp-page="/Account/Login"
+           asp-route-returnUrl="/Account/RedirectByRole">
+            Увійти
+        </a>
+        <a class="btn btn-outline-primary m-1"
+           asp-area="Identity"
+           asp-page="/Account/Register">
+            Зареєструватися
+        </a>
+    }
+    else
+    {
+        <p class="mt-3">Ви увійшли як <strong>@User.Identity?.Name</strong>.</p>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <a class="btn btn-success" asp-controller="Admin" asp-action="Dashboard">Адмін-кабінет</a>
+        }
+        else if (User.IsInRole("Doctor"))
+        {
+            <a class="btn btn-success" asp-controller="Doctor" asp-action="Dashboard">Кабінет лікаря</a>
+        }
+        else if (User.IsInRole("Patient"))
+        {
+            <a class="btn btn-success" asp-controller="Patient" asp-action="Dashboard">Кабінет пацієнта</a>
+        }
+    }
 </div>

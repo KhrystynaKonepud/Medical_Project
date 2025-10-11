@@ -1,5 +1,6 @@
 using Medical_center.Data;
-using Medical_center.Models; 
+using Medical_center.Models;
+using Medical_center.Validators;              // в¬… РґРѕРґР°С”РјРѕ РїСЂРѕСЃС‚С–СЂ С–РјРµРЅ РІР°Р»С–РґР°С‚РѕСЂР°
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,51 +8,69 @@ namespace Medical_center
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Зчитуємо з конфігурації, яку саме БД використовувати
+            // Р‘Р” (Р±РµСЂРµРјРѕ Р· appsettings.json -> "DatabaseProvider")
             var dbProvider = builder.Configuration.GetValue<string>("DatabaseProvider");
-
             switch (dbProvider)
             {
                 case "SqlServer":
-                    builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                        options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection")));
+                    builder.Services.AddDbContext<ApplicationDbContext>(o =>
+                        o.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection")));
                     break;
-
                 case "Postgres":
-                    builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                        options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
+                    builder.Services.AddDbContext<ApplicationDbContext>(o =>
+                        o.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
                     break;
-
                 case "Sqlite":
-                    builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                        options.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection")));
+                    builder.Services.AddDbContext<ApplicationDbContext>(o =>
+                        o.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection")));
                     break;
-
                 case "InMemory":
-                    builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                        options.UseInMemoryDatabase("InMemoryDb"));
+                    builder.Services.AddDbContext<ApplicationDbContext>(o =>
+                        o.UseInMemoryDatabase("InMemoryDb"));
                     break;
-
                 default:
                     throw new Exception("DatabaseProvider is not configured correctly in appsettings.json");
             }
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            // Використовуємо ApplicationUser, а не стандартний IdentityUser
-            builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
-                options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            // Р„Р”РРќРђ СЂРµС”СЃС‚СЂР°С†С–СЏ Identity вЂ” С‚С–Р»СЊРєРё Р· ApplicationUser
+            builder.Services
+                .AddIdentity<ApplicationUser, IdentityRole>(opt =>
+                {
+                    opt.SignIn.RequireConfirmedAccount = true;
+
+                    // Р’РёРјРѕРіРё РґРѕ РїР°СЂРѕР»СЏ: РјС–РЅС–РјСѓРј 8, СЃРєР»Р°РґРЅС–СЃС‚СЊ
+                    opt.Password.RequiredLength = 8;
+                    opt.Password.RequireDigit = true;
+                    opt.Password.RequireUppercase = true;
+                    opt.Password.RequireNonAlphanumeric = true;
+                    // РњР°РєСЃРёРјСѓРј 16 СЃРёРјРІРѕР»С–РІ РѕР±РјРµР¶СѓС”РјРѕ РІР»Р°СЃРЅРёРј РІР°Р»С–РґР°С‚РѕСЂРѕРј РЅРёР¶С‡Рµ
+                })
+                .AddPasswordValidator<MaxLengthPasswordValidator>()     // в¬… РјР°РєСЃРёРјСѓРј 16 СЃРёРјРІРѕР»С–РІ
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders()
+                .AddDefaultUI();
+
+            // Р—РѕРІРЅС–С€РЅС– Р»РѕРіС–РЅРё (Google)
+            builder.Services
+                .AddAuthentication()
+                .AddGoogle(options =>
+                {
+                    options.ClientId = builder.Configuration["Authentication:Google:ClientId"]!;
+                    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
+                    // options.CallbackPath = "/signin-google"; // Р·Р° РїРѕС‚СЂРµР±Рё РјРѕР¶РЅР° Р·Р°С„С–РєСЃСѓРІР°С‚Рё СЏРІРЅРѕ
+                });
 
             builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages();
 
             var app = builder.Build();
 
-            // Конфігурація пайплайну запитів
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
@@ -67,13 +86,19 @@ namespace Medical_center
 
             app.UseRouting();
 
-            app.UseAuthentication(); // Додаємо перед Authorization
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
+
+            // РЎС–Рґ СЂРѕР»РµР№/Р°РґРјС–РЅР°
+            using (var scope = app.Services.CreateScope())
+            {
+                await IdentitySeed.SeedAsync(scope.ServiceProvider);
+            }
 
             app.Run();
         }

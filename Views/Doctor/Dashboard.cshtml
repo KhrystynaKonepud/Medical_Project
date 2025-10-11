@@ -1,0 +1,5 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+<h2>Welcome, @User.Identity?.Name!</h2>
+<p>This is the <strong>@@ViewContext.RouteData.Values["controller"]</strong> dashboard.</p>

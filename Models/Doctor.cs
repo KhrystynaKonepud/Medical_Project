@@ -1,4 +1,6 @@
-﻿namespace Medical_center.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Medical_center.Models
 {
     public class Doctor
     {
@@ -6,8 +8,12 @@
         public string Specialization { get; set; }
         public int ExperienceYears { get; set; }
 
-        public string? Bio { get; set; } 
-        public decimal? Rating { get; set; } = 0; // Середній рейтинг лікаря, початково 0 або null
+        public string? Bio { get; set; }
+
+
+        // ВАЖЛИВО: задаємо точність для decimal
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal? Rating { get; set; } = 0m;
 
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
