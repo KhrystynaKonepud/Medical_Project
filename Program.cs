@@ -42,7 +42,7 @@ namespace Medical_center
             builder.Services
                 .AddIdentity<ApplicationUser, IdentityRole>(opt =>
                 {
-                    opt.SignIn.RequireConfirmedAccount = true;
+                    opt.SignIn.RequireConfirmedAccount = false;
 
                     // Вимоги до пароля: мінімум 8, складність
                     opt.Password.RequiredLength = 8;
