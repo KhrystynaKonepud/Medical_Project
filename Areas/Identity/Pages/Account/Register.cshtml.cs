@@ -77,52 +77,27 @@ namespace Medical_center.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
-            if (!ModelState.IsValid)
-                return Page();
-
-            var user = new ApplicationUser
+            if (ModelState.IsValid)
             {
-                FullName = Input.FullName,
-                PhoneNumber = Input.PhoneNumber
-            };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var result = await _userManager.CreateAsync(user, Input.Password);
 
-            await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
-            await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User created a new account with password.");
+                    await _signInManager.SignInAsync(user, isPersistent: false);
 
-            var result = await _userManager.CreateAsync(user, Input.Password);
-
-            if (result.Succeeded)
-            {
-                _logger.LogInformation("User created a new account with password.");
-
-                // (опційно) Додати базову роль
-                if (!await _userManager.IsInRoleAsync(user, "Patient"))
-                    await _userManager.AddToRoleAsync(user, "Patient");
-
-                // Підтвердження email (якщо ввімкнено RequireConfirmedAccount)
-                var userId = await _userManager.GetUserIdAsync(user);
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Page(
-                    "/Account/ConfirmEmail",
-                    pageHandler: null,
-                    values: new { area = "Identity", userId, code, returnUrl },
-                    protocol: Request.Scheme);
-
-                // Можна інтегрувати реальний IEmailSender; для ЛР достатньо редіректу
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                return LocalRedirect(returnUrl);
+                    // Перенаправляємо на другий крок
+                    return RedirectToAction("CompleteRegistration", "Patient");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
             }
-
-            // Повертаємо помилки валідаторів (у т.ч. з MaxLengthPasswordValidator)
-            foreach (var error in result.Errors)
-                ModelState.AddModelError(string.Empty, error.Description);
-
             return Page();
         }
     }

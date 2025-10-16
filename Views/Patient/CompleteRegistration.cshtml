@@ -1,0 +1,49 @@
+﻿@model Medical_center.ViewModels.CompleteRegistrationViewModel
+@using Medical_center.Models
+
+@{
+    ViewData["Title"] = "Завершення реєстрації";
+}
+
+<h2>@ViewData["Title"]</h2>
+<h4>Будь ласка, заповніть додаткову інформацію про себе.</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-controller="Patient" asp-action="CompleteRegistration" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="FullName"></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Address"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="DateOfBirth"></label>
+                <input asp-for="DateOfBirth" class="form-control" type="date" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Gender"></label>
+                <select asp-for="Gender" asp-items="Html.GetEnumSelectList<Gender>()" class="form-select">
+                    <option selected="selected" value="">Оберіть стать...</option>
+                </select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="w-100 btn btn-lg btn-primary">Зберегти та увійти в кабінет</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

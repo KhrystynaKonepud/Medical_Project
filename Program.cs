@@ -1,106 +1,84 @@
 using Medical_center.Data;
 using Medical_center.Models;
-using Medical_center.Validators;              // ⬅ додаємо простір імен валідатора
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
+using System;
+using System.IO;
 
-namespace Medical_center
+public class Program
 {
-    public class Program
+    public static async Task Main(string[] args)
     {
-        public static async Task Main(string[] args)
+        var builder = WebApplication.CreateBuilder(args);
+
+        // --- Налаштування бази даних ---
+        var dbProvider = builder.Configuration.GetValue<string>("DatabaseProvider") ?? "SqlServer";
+        string connectionString;
+
+        switch (dbProvider)
         {
-            var builder = WebApplication.CreateBuilder(args);
-
-            // БД (беремо з appsettings.json -> "DatabaseProvider")
-            var dbProvider = builder.Configuration.GetValue<string>("DatabaseProvider");
-            switch (dbProvider)
-            {
-                case "SqlServer":
-                    builder.Services.AddDbContext<ApplicationDbContext>(o =>
-                        o.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection")));
-                    break;
-                case "Postgres":
-                    builder.Services.AddDbContext<ApplicationDbContext>(o =>
-                        o.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
-                    break;
-                case "Sqlite":
-                    builder.Services.AddDbContext<ApplicationDbContext>(o =>
-                        o.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection")));
-                    break;
-                case "InMemory":
-                    builder.Services.AddDbContext<ApplicationDbContext>(o =>
-                        o.UseInMemoryDatabase("InMemoryDb"));
-                    break;
-                default:
-                    throw new Exception("DatabaseProvider is not configured correctly in appsettings.json");
-            }
-
-            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-            // ЄДИНА реєстрація Identity — тільки з ApplicationUser
-            builder.Services
-                .AddIdentity<ApplicationUser, IdentityRole>(opt =>
-                {
-                    opt.SignIn.RequireConfirmedAccount = false;
-
-                    // Вимоги до пароля: мінімум 8, складність
-                    opt.Password.RequiredLength = 8;
-                    opt.Password.RequireDigit = true;
-                    opt.Password.RequireUppercase = true;
-                    opt.Password.RequireNonAlphanumeric = true;
-                    // Максимум 16 символів обмежуємо власним валідатором нижче
-                })
-                .AddPasswordValidator<MaxLengthPasswordValidator>()     // ⬅ максимум 16 символів
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders()
-                .AddDefaultUI();
-
-            // Зовнішні логіни (Google)
-            builder.Services
-                .AddAuthentication()
-                .AddGoogle(options =>
-                {
-                    options.ClientId = builder.Configuration["Authentication:Google:ClientId"]!;
-                    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
-                    // options.CallbackPath = "/signin-google"; // за потреби можна зафіксувати явно
-                });
-
-            builder.Services.AddControllersWithViews();
-            builder.Services.AddRazorPages();
-
-            var app = builder.Build();
-
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseMigrationsEndPoint();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
-            }
-
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
-            app.UseRouting();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-            app.MapRazorPages();
-
-            // Сід ролей/адміна
-            using (var scope = app.Services.CreateScope())
-            {
-                await IdentitySeed.SeedAsync(scope.ServiceProvider);
-            }
-
-            app.Run();
+            case "SqlServer":
+                connectionString = builder.Configuration.GetConnectionString("SqlServerConnection") ?? throw new InvalidOperationException("Connection string 'SqlServerConnection' not found.");
+                builder.Services.AddDbContext<ApplicationDbContext>(o => o.UseSqlServer(connectionString));
+                break;
+            case "Postgres":
+                connectionString = builder.Configuration.GetConnectionString("PostgresConnection") ?? throw new InvalidOperationException("Connection string 'PostgresConnection' not found.");
+                builder.Services.AddDbContext<ApplicationDbContext>(o => o.UseNpgsql(connectionString));
+                break;
+            case "Sqlite":
+                connectionString = builder.Configuration.GetConnectionString("SqliteConnection") ?? throw new InvalidOperationException("Connection string 'SqliteConnection' not found.");
+                builder.Services.AddDbContext<ApplicationDbContext>(o => o.UseSqlite(connectionString));
+                break;
+            default:
+                connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Default connection string not found.");
+                builder.Services.AddDbContext<ApplicationDbContext>(o => o.UseSqlServer(connectionString));
+                break;
         }
+
+        builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+        builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+            options.SignIn.RequireConfirmedAccount = false;
+            options.Password.RequiredLength = 8;
+        })
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
+
+        builder.Services.AddControllers();
+
+        var app = builder.Build();
+
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+        }
+
+        app.UseHttpsRedirection();
+
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(
+                Path.Combine(app.Environment.ContentRootPath, "ClientApp", "build"))
+        });
+
+        app.UseRouting();
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.MapControllers();
+
+        app.MapFallbackToFile("index.html", new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(
+                Path.Combine(app.Environment.ContentRootPath, "ClientApp", "build"))
+        });
+
+        // Виклик сіду даних
+        using (var scope = app.Services.CreateScope())
+        {
+            await IdentitySeed.SeedAsync(scope.ServiceProvider);
+        }
+
+        app.Run();
     }
 }
