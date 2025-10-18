@@ -1,34 +1,28 @@
-﻿using System.Threading.Tasks;
-using Medical_center.Models;
-using Microsoft.AspNetCore.Identity;
-
-namespace Medical_center.Validators
+﻿namespace Medical_center.Validators
 {
-    /// <summary>
-    /// Додає серверну перевірку: пароль не довший за 16 символів.
-    /// </summary>
-    public class MaxLengthPasswordValidator : IPasswordValidator<ApplicationUser>
+    using Microsoft.AspNetCore.Identity;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    public class MaxLengthPasswordValidator<TUser> : IPasswordValidator<TUser> where TUser : class
     {
-        private const int MaxLen = 16;
+        private const int MaxLength = 16;
 
         public Task<IdentityResult> ValidateAsync(
-            UserManager<ApplicationUser> manager,
-            ApplicationUser user,
-            string password)
+            UserManager<TUser> manager, TUser user, string password)
         {
-            if (password is null)
+            var errors = new List<IdentityError>();
+            if (!string.IsNullOrEmpty(password) && password.Length > MaxLength)
             {
-                return Task.FromResult(IdentityResult.Failed(
-                    new IdentityError { Description = "Пароль є обовʼязковим." }));
+                errors.Add(new IdentityError
+                {
+                    Code = "PasswordTooLong",
+                    Description = $"Password must be at most {MaxLength} characters."
+                });
             }
-
-            if (password.Length > MaxLen)
-            {
-                return Task.FromResult(IdentityResult.Failed(
-                    new IdentityError { Description = $"Пароль не може перевищувати {MaxLen} символів." }));
-            }
-
-            return Task.FromResult(IdentityResult.Success);
+            return Task.FromResult(
+                errors.Any() ? IdentityResult.Failed(errors.ToArray()) : IdentityResult.Success);
         }
     }
 }
