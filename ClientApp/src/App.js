@@ -5,6 +5,9 @@ import Register from './pages/Register';
 import HomePage from './pages/HomePage';
 import PatientDashboard from './pages/PatientDashboard';
 import AdminDashboard from './pages/AdminDashboard';
+import CreateDoctor from './pages/CreateDoctor';
+import DoctorsList from './pages/DoctorsList';
+import EditDoctor from './pages/EditDoctor';
 
 function App() {
     return (
@@ -16,6 +19,9 @@ function App() {
                     <Route path="/register" element={<Register />} />
                     <Route path="/patient/dashboard" element={<PatientDashboard />} />
                     <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                    <Route path="/admin/createdoctor" element={<CreateDoctor />} />
+                    <Route path="/admin/doctors" element={<DoctorsList />} />
+                    <Route path="/admin/editdoctor/:id" element={<EditDoctor />} />
                     <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
             </div>
