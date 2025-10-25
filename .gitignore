@@ -19,3 +19,8 @@ packages/
 # Others
 *.swp
 *.DS_Store
+
+# User Secrets
+# Дуже важливо: цей файл містить секретні ключі, паролі, токени.
+# Ніколи не завантажуйте його на GitHub!
+appsettings.json
