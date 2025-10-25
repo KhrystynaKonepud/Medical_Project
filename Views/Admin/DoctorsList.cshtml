@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Medical_center.Models.Doctor>
+
+<h2>Список лікарів</h2>
+<p><a class="btn btn-success" href="/Admin/CreateDoctor">Додати лікаря</a></p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ПІБ</th>
+            <th>Email</th>
+            <th>Спеціалізація</th>
+            <th>Досвід</th>
+            <th>Рейтинг</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model)
+        {
+            <tr>
+                <td>@d.User.FullName</td>
+                <td>@d.User.Email</td>
+                <td>@d.Specialization</td>
+                <td>@d.ExperienceYears</td>
+                <td>@d.Rating</td>
+                <td>
+                    <a href="/Admin/EditDoctor/@d.Id" class="btn btn-warning btn-sm">Редагувати</a>
+                    <a href="/Admin/DeleteDoctor/@d.Id" class="btn btn-danger btn-sm">Видалити</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

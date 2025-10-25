@@ -1,5 +1,16 @@
 ﻿@{
     ViewData["Title"] = "Dashboard";
 }
-<h2>Welcome, @User.Identity?.Name!</h2>
-<p>This is the <strong>@@ViewContext.RouteData.Values["controller"]</strong> dashboard.</p>
+
+<h2>Ласкаво просимо, @User.Identity?.Name!</h2>
+<p>Це панель адміністратора <strong>@ViewContext.RouteData.Values["controller"]</strong>.</p>
+
+<div class="mt-4">
+    <a asp-controller="Admin" asp-action="CreateDoctor" class="btn btn-success btn-lg me-2">
+        Додати нового лікаря
+    </a>
+
+    <a asp-controller="Admin" asp-action="Doctors" class="btn btn-primary btn-lg">
+        Переглянути список лікарів
+    </a>
+</div>
