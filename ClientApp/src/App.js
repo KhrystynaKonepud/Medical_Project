@@ -7,6 +7,8 @@ import AdminDashboard from './pages/AdminDashboard';
 import CreateDoctor from './pages/CreateDoctor';
 import DoctorsList from './pages/DoctorsList';
 import EditDoctor from './pages/EditDoctor';
+import DoctorDashboard from './pages/doctor/DoctorDashboard';
+
 
 // 1. Імпортуємо новий лейаут і сторінки пацієнта
 import PatientLayout from './pages/patient/PatientLayout';
@@ -16,6 +18,7 @@ import PatientVaccination from './pages/patient/PatientVaccination';
 import PatientLabResults from './pages/patient/PatientLabResults';
 import PatientHistory from './pages/patient/PatientHistory';
 import PatientPrescriptions from './pages/patient/PatientPrescriptions';
+
 
 // 2. Створюємо хелпер для збереження .container на публічних сторінках
 const PublicLayout = ({ children }) => (
@@ -39,6 +42,8 @@ function App() {
                 <Route path="/admin/createdoctor" element={<PublicLayout><CreateDoctor /></PublicLayout>} />
                 <Route path="/admin/doctors" element={<PublicLayout><DoctorsList /></PublicLayout>} />
                 <Route path="/admin/editdoctor/:id" element={<PublicLayout><EditDoctor /></PublicLayout>} />
+                <Route path="/doctor/dashboard" element={< DoctorDashboard />} />
+
 
                 {/* === НОВІ МАРШРУТИ ПАЦІЄНТА === */}
                 {/* 4. Встановлюємо PatientLayout як батьківський маршрут */}

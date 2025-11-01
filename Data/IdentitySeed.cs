@@ -18,9 +18,7 @@ namespace Medical_center.Data
             foreach (var roleName in roleNames)
             {
                 if (!await roleManager.RoleExistsAsync(roleName))
-                {
                     await roleManager.CreateAsync(new IdentityRole(roleName));
-                }
             }
 
             // 2. Створення користувача-адміністратора
@@ -37,9 +35,24 @@ namespace Medical_center.Data
                 };
                 var result = await userManager.CreateAsync(adminUser, "Admin#2025!");
                 if (result.Succeeded)
-                {
                     await userManager.AddToRoleAsync(adminUser, "Admin");
-                }
+            }
+
+            // 3. За потреби можна додати тестового лікаря
+            var doctorEmail = "doctor@med.local";
+            if (await userManager.FindByEmailAsync(doctorEmail) == null)
+            {
+                var doctorUser = new ApplicationUser
+                {
+                    UserName = doctorEmail,
+                    Email = doctorEmail,
+                    FullName = "John Doctor",
+                    PhoneNumber = "+380111111111",
+                    EmailConfirmed = true
+                };
+                var result = await userManager.CreateAsync(doctorUser, "Doctor#2025!");
+                if (result.Succeeded)
+                    await userManager.AddToRoleAsync(doctorUser, "Doctor");
             }
         }
     }
