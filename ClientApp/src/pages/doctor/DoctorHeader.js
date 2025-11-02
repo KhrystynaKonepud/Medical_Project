@@ -5,21 +5,24 @@ import axios from 'axios';
 export default function DoctorHeader() {
     const navigate = useNavigate();
 
+    // Логіка виходу, перенесена з DoctorDashboard
     const handleLogout = async () => {
         try {
+            // Викликаємо /api/auth/logout
             await axios.post('/api/auth/logout');
             navigate('/login');
         } catch (error) {
             console.error("Logout failed", error);
-            navigate('/login');
+            navigate('/login'); // Примусово перекидаємо на логін
         }
     };
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
             <div className="container-fluid">
+                {/* Лого/назва, веде на головну сторінку кабінету */}
                 <Link className="navbar-brand" to="/doctor/dashboard">
-                    Кабінет лікаря
+                    Кабінет Лікаря
                 </Link>
                 <button
                     onClick={handleLogout}

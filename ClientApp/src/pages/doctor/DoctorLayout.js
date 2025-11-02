@@ -1,51 +1,35 @@
-﻿import React, { useEffect, useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+﻿import React from 'react';
+import { Outlet } from 'react-router-dom';
 import DoctorHeader from './DoctorHeader';
 import DoctorSidebar from './DoctorSidebar';
 import DoctorFooter from './DoctorFooter';
 
+// Стилі для "приклеєного" футера та макету
 const layoutStyle = {
     display: 'flex',
     flexDirection: 'column',
-    minHeight: '100vh'
+    minHeight: '100vh' // Займає всю висоту екрану
 };
 
 const mainStyle = {
     display: 'flex',
-    flex: 1
+    flex: 1 // Займає весь доступний простір між хедером і футером
 };
 
 const contentStyle = {
-    flex: 1,
+    flex: 1, // Займає весь простір праворуч від сайдбару
     padding: '2rem',
-    backgroundColor: '#f8f9fa'
+    backgroundColor: '#f8f9fa' // Світлий фон для контенту
 };
 
 export default function DoctorLayout() {
-    const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        // перевірка авторизації лікаря
-        axios.get('/api/auth/check', { withCredentials: true })
-            .then(response => {
-                if (response.data.role !== 'Doctor') {
-                    navigate('/login');
-                }
-            })
-            .catch(() => navigate('/login'))
-            .finally(() => setLoading(false));
-    }, [navigate]);
-
-    if (loading) return <p>Завантаження...</p>;
-
     return (
         <div style={layoutStyle}>
             <DoctorHeader />
             <div style={mainStyle}>
                 <DoctorSidebar />
                 <main style={contentStyle}>
+                    {/* Сюди React Router буде "вставляти" сторінки: Profile, Patients тощо */}
                     <Outlet />
                 </main>
             </div>
