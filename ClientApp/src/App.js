@@ -8,7 +8,9 @@ import CreateDoctor from './pages/CreateDoctor';
 import DoctorsList from './pages/DoctorsList';
 import EditDoctor from './pages/EditDoctor';
 import DoctorDashboard from './pages/doctor/DoctorDashboard';
-
+import DoctorProfile from './pages/doctor/DoctorProfile';
+import DoctorEditProfile from './pages/doctor/DoctorEditProfile';
+import DoctorAvailabilityPage from './pages/doctor/DoctorAvailabilityPage';
 
 // 1. Імпортуємо новий лейаут і сторінки пацієнта
 import PatientLayout from './pages/patient/PatientLayout';
@@ -19,8 +21,6 @@ import PatientLabResults from './pages/patient/PatientLabResults';
 import PatientHistory from './pages/patient/PatientHistory';
 import PatientPrescriptions from './pages/patient/PatientPrescriptions';
 
-
-// 2. Створюємо хелпер для збереження .container на публічних сторінках
 const PublicLayout = ({ children }) => (
     <div className="container py-4">
         {children}
@@ -43,13 +43,15 @@ function App() {
                 <Route path="/admin/doctors" element={<PublicLayout><DoctorsList /></PublicLayout>} />
                 <Route path="/admin/editdoctor/:id" element={<PublicLayout><EditDoctor /></PublicLayout>} />
                 <Route path="/doctor/dashboard" element={< DoctorDashboard />} />
-
+                <Route path="/doctor/profile" element={< DoctorProfile />} />
+                <Route path="/doctor/editprofile" element={< DoctorEditProfile />} />
+                <Route path="/doctor/availability" element={< DoctorAvailabilityPage />} />
 
                 {/* === НОВІ МАРШРУТИ ПАЦІЄНТА === */}
                 {/* 4. Встановлюємо PatientLayout як батьківський маршрут */}
                 <Route path="/patient/dashboard" element={<PatientLayout />}>
                     {/* При вході на /patient/dashboard, автоматично перекидаємо на 'profile'.
-                      Логіка з Login.js та Register.js 
+                      Логіка з Login.js та Register.js
                       ідеально сюди впишеться.
                     */}
                     <Route index element={<Navigate to="profile" replace />} />
