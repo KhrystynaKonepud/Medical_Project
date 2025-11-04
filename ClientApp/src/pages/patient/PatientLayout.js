@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import PatientHeader from './PatientHeader';
 import PatientSidebar from './PatientSidebar';
 import PatientFooter from './PatientFooter';
+import { PatientProvider } from './PatientContext'; // ⬅️ ІМПОРТ
 
 // Стилі для "приклеєного" футера та макету
 const layoutStyle = {
@@ -26,13 +27,18 @@ export default function PatientLayout() {
     return (
         <div style={layoutStyle}>
             <PatientHeader />
-            <div style={mainStyle}>
-                <PatientSidebar />
-                <main style={contentStyle}>
-                    {/* Сюди React Router буде "вставляти" сторінки: Profile, Doctors тощо */}
-                    <Outlet />
-                </main>
-            </div>
+
+            {/* ⬅️ ОБГОРТАЄМО ОСНОВНУ ЧАСТИНУ В PROVIDER */}
+            <PatientProvider>
+                <div style={mainStyle}>
+                    <PatientSidebar />
+                    <main style={contentStyle}>
+                        {/* Сюди React Router буде "вставляти" сторінки */}
+                        <Outlet />
+                    </main>
+                </div>
+            </PatientProvider>
+
             <PatientFooter />
         </div>
     );

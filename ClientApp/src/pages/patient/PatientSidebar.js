@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { usePatient } from './PatientContext'; // ⬅️ ІМПОРТ
 
 // Стилі для бокової панелі
 const sidebarStyle = {
@@ -10,34 +11,71 @@ const sidebarStyle = {
 };
 
 export default function PatientSidebar() {
+    // ⬅️ ОТРИМУЄМО ДАНІ З КОНТЕКСТУ
+    const { isProfileComplete, loading } = usePatient();
 
-    // Функція для NavLink, щоб Bootstrap коректно підсвічував активне посилання
-    const getNavLinkClass = ({ isActive }) => {
-        return isActive ? 'nav-link active fw-bold' : 'nav-link text-dark';
+    // Функція для NavLink
+    const getNavLinkClass = ({ isActive }, isProtected = false) => {
+        const baseClass = 'nav-link';
+
+        // 1. Перевіряємо, чи посилання захищене І чи профіль не завершений
+        if (isProtected && !isProfileComplete && !loading) {
+            return `${baseClass} text-muted disabled`; // Bootstrap клас для блокування
+        }
+
+        // 2. Стандартна логіка
+        return isActive ? `${baseClass} active fw-bold` : `${baseClass} text-dark`;
     };
 
     return (
         <nav style={sidebarStyle}>
             <div className="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
-                <NavLink to="profile" className={getNavLinkClass}>
+                {/* Профіль завжди доступний */}
+                <NavLink
+                    to="profile"
+                    className={(props) => getNavLinkClass(props, false)}
+                >
                     Профіль
                 </NavLink>
-                <NavLink to="doctors" className={getNavLinkClass}>
+
+                {/* Захищені посилання */}
+                <NavLink
+                    to="doctors"
+                    className={(props) => getNavLinkClass(props, true)}
+                >
                     Перегляд лікарів
                 </NavLink>
-                <NavLink to="vaccination" className={getNavLinkClass}>
+                <NavLink
+                    to="vaccination"
+                    className={(props) => getNavLinkClass(props, true)}
+                >
                     Запис на вакцинацію
                 </NavLink>
-                <NavLink to="results" className={getNavLinkClass}>
+                <NavLink
+                    to="results"
+                    className={(props) => getNavLinkClass(props, true)}
+                >
                     Перегляд аналізів
                 </NavLink>
-                <NavLink to="history" className={getNavLinkClass}>
+                <NavLink
+                    to="history"
+                    className={(props) => getNavLinkClass(props, true)}
+                >
                     Історія записів
                 </NavLink>
-                <NavLink to="prescriptions" className={getNavLinkClass}>
+                <NavLink
+                    to="prescriptions"
+                    className={(props) => getNavLinkClass(props, true)}
+                >
                     Мої рецепти
                 </NavLink>
             </div>
+
+            {!isProfileComplete && !loading && (
+                <div className="alert alert-warning mt-3" style={{ fontSize: '0.9rem' }}>
+                    Щоб активувати меню, заповніть ваш профіль.
+                </div>
+            )}
         </nav>
     );
 }
