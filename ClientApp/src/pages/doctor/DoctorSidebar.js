@@ -22,17 +22,14 @@ export default function DoctorSidebar() {
                 <NavLink to="profile" className={getNavLinkClass}>
                     Мій профіль
                 </NavLink>
-                <NavLink to="patients" className={getNavLinkClass}>
-                    Мої пацієнти
-                </NavLink>
                 <NavLink to="availability" className={getNavLinkClass}>
                     Графік прийомів
                 </NavLink>
-                <NavLink to="appointments" className={getNavLinkClass}>
+                <NavLink to="appointmentslist" className={getNavLinkClass}>
                     Записи на прийом
                 </NavLink>
-                <NavLink to="messages" className={getNavLinkClass}>
-                    Повідомлення
+                <NavLink to="doctorprescriptions" className={getNavLinkClass}>
+                    Рецепти
                 </NavLink>
             </div>
         </nav>

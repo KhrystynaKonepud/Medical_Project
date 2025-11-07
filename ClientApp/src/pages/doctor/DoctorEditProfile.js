@@ -76,7 +76,7 @@ const DoctorEditProfile = () => {
             ? Number(updatePayload.experienceYears)
             : null;
 
-        // НОВЕ ВИПРАВЛЕННЯ: Перетворення Gender (enum) у число (0 або 1)
+        // Перетворення Gender (enum) у число (0 або 1)
         let genderValue = null;
         if (updatePayload.gender === 'Male') {
             genderValue = 0; // Male - перше значення enum (0)
@@ -84,8 +84,8 @@ const DoctorEditProfile = () => {
             genderValue = 1; // Female - друге значення enum (1)
         }
 
-        // 2. Підготовка даних для відправки
-        // КЛЮЧОВЕ ВИПРАВЛЕННЯ: Використовуємо PascalCase для відповідності C# моделі
+        // Підготовка даних для відправки
+        // Використовуємо PascalCase для відповідності C# моделі
         const payload = {
             FullName: safeNull(updatePayload.fullName),
             Address: safeNull(updatePayload.address),
@@ -122,7 +122,6 @@ const DoctorEditProfile = () => {
                 for (const key in errorData.errors) {
                     if (errorData.errors.hasOwnProperty(key)) {
                         const errorMessages = errorData.errors[key].join('; ');
-                        // Форматуємо: "Поле <ключ>: <помилки>"
                         allErrors.push(`Поле "${key}": ${errorMessages}`);
                     }
                 }
@@ -142,7 +141,6 @@ const DoctorEditProfile = () => {
     return (
         <div className="container mt-4">
             <h3 className="display-5 mb-4">Редагування профілю лікаря</h3>
-            {/* Адаптивне відображення повідомлень */}
             {message && <div className={`alert ${message.includes('Помилка') || message.includes('Error') ? "alert-danger" : "alert-success"}`}>{message}</div>}
 
             <form onSubmit={handleSubmit}>
@@ -167,14 +165,13 @@ const DoctorEditProfile = () => {
                     <label className="form-label">Стать</label>
                     <select className="form-select" name="gender" value={formData.gender || ''} onChange={handleChange}>
                         <option value="">Виберіть</option>
-                        {/* Зберігаємо Male/Female, щоб відповідати C# enum */}
                         <option value="Male">Чоловіча</option>
                         <option value="Female">Жіноча</option>
                     </select>
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Номер телефону</label>
-                    {/* ДОДАНО: Підказка для формату номера телефону */}
+                    {/* Підказка для формату номера телефону */}
                     <input
                         type="text"
                         className="form-control"

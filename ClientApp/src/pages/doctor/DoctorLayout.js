@@ -4,7 +4,7 @@ import DoctorHeader from './DoctorHeader';
 import DoctorSidebar from './DoctorSidebar';
 import DoctorFooter from './DoctorFooter';
 
-// Стилі для "приклеєного" футера та макету
+// Стилі для футера та макету
 const layoutStyle = {
     display: 'flex',
     flexDirection: 'column',
@@ -29,7 +29,6 @@ export default function DoctorLayout() {
             <div style={mainStyle}>
                 <DoctorSidebar />
                 <main style={contentStyle}>
-                    {/* Сюди React Router буде "вставляти" сторінки: Profile, Patients тощо */}
                     <Outlet />
                 </main>
             </div>

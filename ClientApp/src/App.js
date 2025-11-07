@@ -13,13 +13,14 @@ import EditDoctor from './pages/EditDoctor';
 
 // === —“Œ–≤Õ » À≤ ¿–ﬂ “¿ ÕŒ¬»… À≈…¿”“ ===
 import DoctorLayout from './pages/doctor/DoctorLayout';
-import DoctorDashboard from './pages/doctor/DoctorDashboard';
 import DoctorProfile from './pages/doctor/DoctorProfile';
-// ƒÓ‰‡∫ÏÓ ≥ÏÔÓÚ DoctorEditProfile
-import DoctorEditProfile from './pages/doctor/DoctorEditProfile'; // <-- ÕŒ¬»… ≤ÃœŒ–“
-import DoctorPatients from './pages/doctor/DoctorPatients';
+import DoctorEditProfile from './pages/doctor/DoctorEditProfile';
+import DoctorAppointmentslist from './pages/doctor/DoctorAppointmentslist';
 import DoctorAvailabilityPage from './pages/doctor/DoctorAvailabilityPage';
-import DoctorMessages from './pages/doctor/DoctorMessages';
+import DoctorCreatemedicalrecord from './pages/doctor/DoctorCreatemedicalrecord';
+import DoctorEditMedicalRecord from './pages/doctor/DoctorEditMedicalRecord';
+import DoctorViewMedicalRecord from "./pages/doctor/DoctorViewMedicalRecord";
+import DoctorPrescriptions from "./pages/doctor/Doctorprescriptions";
 
 // === —“Œ–≤Õ » œ¿÷≤™Õ“¿ ===
 import PatientLayout from './pages/patient/PatientLayout';
@@ -59,9 +60,13 @@ function App() {
                     {/* ƒÓ˜≥Ì≥ ÒÚÓ≥ÌÍË, ˘Ó ·Û‰ÛÚ¸ ÂÌ‰ÂËÚËÒ¸ ‚ÒÂÂ‰ËÌ≥ DoctorLayout */}
                     <Route path="profile" element={<DoctorProfile />} />
                     <Route path="editprofile" element={<DoctorEditProfile />} /> {/* <-- ƒŒƒ¿ÕŒ Ã¿–ÿ–”“ –≈ƒ¿√”¬¿ÕÕﬂ */}
-                    <Route path="patients" element={<DoctorPatients />} />
+                    <Route path="appointmentslist" element={<DoctorAppointmentslist />} />
                     <Route path="availability" element={<DoctorAvailabilityPage />} />
-                    <Route path="messages" element={<DoctorMessages />} />
+                    <Route path="createrecord/:appointmentId" element={<DoctorCreatemedicalrecord />} />
+                    <Route path="medicalrecord/:appointmentId" element={<DoctorViewMedicalRecord />} />
+                    <Route path="medical-records-edit/:id" element={<DoctorEditMedicalRecord />} />
+                    <Route path="doctorprescriptions" element={<DoctorPrescriptions />} />
+
                 </Route>
 
                 {/* === Ã¿–ÿ–”“» œ¿÷≤™Õ“¿ === */}

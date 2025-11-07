@@ -5,10 +5,8 @@ import axios from 'axios';
 export default function DoctorHeader() {
     const navigate = useNavigate();
 
-    // Логіка виходу, перенесена з DoctorDashboard
     const handleLogout = async () => {
         try {
-            // Викликаємо /api/auth/logout
             await axios.post('/api/auth/logout');
             navigate('/login');
         } catch (error) {
