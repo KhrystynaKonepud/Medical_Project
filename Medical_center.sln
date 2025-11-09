@@ -10,6 +10,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{22C5BED9-F20A-4851-AC6E-2C6A147D33A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medical_center.UnitTests", "tests\Medical_center.UnitTests\Medical_center.UnitTests.csproj", "{5DDE5CF0-B05A-4A14-A310-F00474657121}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medical_center.IntegrationTests", "tests\Medical_center.IntegrationTests\Medical_center.IntegrationTests.csproj", "{D919A577-D141-4357-BA48-B6E564EDBA99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,11 +26,23 @@ Global
 		{4000FC44-B498-45E8-8312-431DA7F99E70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4000FC44-B498-45E8-8312-431DA7F99E70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4000FC44-B498-45E8-8312-431DA7F99E70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DDE5CF0-B05A-4A14-A310-F00474657121}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DDE5CF0-B05A-4A14-A310-F00474657121}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DDE5CF0-B05A-4A14-A310-F00474657121}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DDE5CF0-B05A-4A14-A310-F00474657121}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D919A577-D141-4357-BA48-B6E564EDBA99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D919A577-D141-4357-BA48-B6E564EDBA99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D919A577-D141-4357-BA48-B6E564EDBA99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D919A577-D141-4357-BA48-B6E564EDBA99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7F682F95-FD84-4F1B-BED9-7990009D708D}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5DDE5CF0-B05A-4A14-A310-F00474657121} = {22C5BED9-F20A-4851-AC6E-2C6A147D33A4}
+		{D919A577-D141-4357-BA48-B6E564EDBA99} = {22C5BED9-F20A-4851-AC6E-2C6A147D33A4}
 	EndGlobalSection
 EndGlobal

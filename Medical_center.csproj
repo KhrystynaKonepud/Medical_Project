@@ -4,8 +4,18 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <SpaRoot>ClientApp\</SpaRoot> 
+    <SpaRoot>ClientApp\</SpaRoot>
   </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Medical_center.IntegrationTests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="tests/**" />
+    <EmbeddedResource Remove="tests/**" />
+    <None Remove="tests/**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.0" />
@@ -23,18 +33,5 @@
     <Folder Include="ClientApp\src\pages\admin\" />
   </ItemGroup>
 
-  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
-    <Exec Command="node --version" ContinueOnError="true">
-      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
-    </Exec>
-    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build this project. Please install it from https://nodejs.org/." />
-    <Message Importance="high" Text="Restoring NPM dependencies..." />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-  </Target>
-  
-  <Target Name="DebugRunBuild" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' ">
-     <Message Importance="high" Text="Building React client app..." />
-     <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
-  </Target>
 
 </Project>
