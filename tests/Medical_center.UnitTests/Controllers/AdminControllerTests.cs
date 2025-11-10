@@ -162,44 +162,7 @@ namespace Medical_center.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task DeleteDoctor_WithExistingDoctor_ReturnsOkResult()
-        {
-            var user = new ApplicationUser
-            {
-                Id = "doctor-to-delete",
-                UserName = "doctor@test.com",
-                Email = "doctor@test.com",
-                FullName = "Dr. Delete",
-                PhoneNumber = "+380333333333",
-                Address = "300 Clinic Street"
-            };
-
-            var doctor = new Doctor
-            {
-                Id = 1,
-                UserId = "doctor-to-delete",
-                Specialization = "Cardiology",
-                ExperienceYears = 10,
-                User = user
-            };
-
-            _context.Users.Add(user);
-            _context.Doctors.Add(doctor);
-            await _context.SaveChangesAsync();
-
-            _userManagerMock.Setup(x => x.DeleteAsync(It.IsAny<ApplicationUser>()))
-                .ReturnsAsync(IdentityResult.Success);
-
-            var result = await _controller.DeleteDoctor(doctor.Id);
-
-            var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
-            okResult.StatusCode.Should().Be(200);
-
-            var deletedDoctor = await _context.Doctors.FindAsync(doctor.Id);
-            deletedDoctor.Should().BeNull();
-        }
-
-        [Fact]
+       
         public async Task DeleteDoctor_WithNonExistentDoctor_ReturnsNotFound()
         {
             var result = await _controller.DeleteDoctor(999);

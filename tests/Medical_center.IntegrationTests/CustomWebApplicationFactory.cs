@@ -1,119 +1,51 @@
-using Medical_center.Data;
-using Medical_center.Models;
+﻿using Medical_center.Data;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 using System.Linq;
 
 namespace Medical_center.IntegrationTests
 {
     public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     {
-        protected override void ConfigureWebHost(IWebHostBuilder builder)
+        protected override IHost CreateHost(IHostBuilder builder)
         {
-            builder.ConfigureServices(services =>
+            var builtHost = base.CreateHost(builder);
+
+            using (var scope = builtHost.Services.CreateScope())
             {
-                var dbContextDescriptor = services.SingleOrDefault(
-                    d => d.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
+                var services = scope.ServiceProvider;
 
-                if (dbContextDescriptor != null)
+                var serviceCollection = new ServiceCollection();
+
+                foreach (var descriptor in builder.GetType()
+                    .GetField("_services", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                    ?.GetValue(builder) as IServiceCollection ?? new ServiceCollection())
                 {
-                    services.Remove(dbContextDescriptor);
+                    if (descriptor.ServiceType != typeof(DbContextOptions<ApplicationDbContext>))
+                    {
+                        serviceCollection.Add(descriptor);
+                    }
                 }
-
-                services.AddDbContext<ApplicationDbContext>(options =>
+                serviceCollection.AddDbContext<ApplicationDbContext>(options =>
                 {
-                    options.UseInMemoryDatabase("InMemoryDbForTesting");
+                    options.UseInMemoryDatabase("TestDatabase");
                 });
 
-                var sp = services.BuildServiceProvider();
+                var sp = serviceCollection.BuildServiceProvider();
 
-                using (var scope = sp.CreateScope())
+                using (var dbScope = sp.CreateScope())
                 {
-                    var scopedServices = scope.ServiceProvider;
-                    var db = scopedServices.GetRequiredService<ApplicationDbContext>();
-                    var roleManager = scopedServices.GetRequiredService<RoleManager<IdentityRole>>();
-                    var userManager = scopedServices.GetRequiredService<UserManager<ApplicationUser>>();
-                    var logger = scopedServices.GetRequiredService<ILogger<CustomWebApplicationFactory>>();
-
+                    var db = dbScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                    db.Database.EnsureDeleted();
                     db.Database.EnsureCreated();
-
-                    try
-                    {
-                        SeedTestData(db, roleManager, userManager).GetAwaiter().GetResult();
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError(ex, "An error occurred seeding the database with test data. Error: {Message}", ex.Message);
-                    }
                 }
-            });
-        }
-
-        private static async System.Threading.Tasks.Task SeedTestData(
-            ApplicationDbContext context,
-            RoleManager<IdentityRole> roleManager,
-            UserManager<ApplicationUser> userManager)
-        {
-            if (!await roleManager.RoleExistsAsync("Admin"))
-                await roleManager.CreateAsync(new IdentityRole("Admin"));
-
-            if (!await roleManager.RoleExistsAsync("Doctor"))
-                await roleManager.CreateAsync(new IdentityRole("Doctor"));
-
-            if (!await roleManager.RoleExistsAsync("Patient"))
-                await roleManager.CreateAsync(new IdentityRole("Patient"));
-
-            if (await userManager.FindByEmailAsync("testpatient@test.com") == null)
-            {
-                var patient = new ApplicationUser
-                {
-                    UserName = "testpatient@test.com",
-                    Email = "testpatient@test.com",
-                    FullName = "Test Patient",
-                    PhoneNumber = "+380111111111",
-                    EmailConfirmed = true
-                };
-
-                await userManager.CreateAsync(patient, "Patient@123");
-                await userManager.AddToRoleAsync(patient, "Patient");
-
-                context.Patients.Add(new Patient
-                {
-                    UserId = patient.Id,
-                    EmergencyContact = "+380999999999"
-                });
             }
 
-            if (await userManager.FindByEmailAsync("testdoctor@test.com") == null)
-            {
-                var doctor = new ApplicationUser
-                {
-                    UserName = "testdoctor@test.com",
-                    Email = "testdoctor@test.com",
-                    FullName = "Dr. Test Doctor",
-                    PhoneNumber = "+380222222222",
-                    EmailConfirmed = true
-                };
-
-                await userManager.CreateAsync(doctor, "Doctor@123");
-                await userManager.AddToRoleAsync(doctor, "Doctor");
-
-                context.Doctors.Add(new Doctor
-                {
-                    UserId = doctor.Id,
-                    Specialization = "General Practice",
-                    ExperienceYears = 5,
-                    Bio = "Test doctor for integration tests",
-                    Rating = 4.5m
-                });
-            }
-
-            await context.SaveChangesAsync();
+            return builtHost;
         }
     }
 }

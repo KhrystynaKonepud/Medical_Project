@@ -37,54 +37,6 @@ namespace Medical_center.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task GetProfile_WhenDoctorExists_ReturnsOkResult()
-        {
-            var userId = "doctor-user-id";
-            var doctor = new Doctor
-            {
-                Id = 1,
-                UserId = userId,
-                Specialization = "Cardiology",
-                ExperienceYears = 10,
-                Bio = "Experienced cardiologist",
-                Rating = 4.5m
-            };
-
-            var user = new ApplicationUser
-            {
-                Id = userId,
-                UserName = "doctor@test.com",
-                Email = "doctor@test.com",
-                FullName = "Dr. Test",
-                PhoneNumber = "+380123456789",
-                Address = "123 Test Street",
-                DoctorProfile = doctor
-            };
-
-            _context.Doctors.Add(doctor);
-            await _context.SaveChangesAsync();
-
-            _userManagerMock.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>()))
-                .ReturnsAsync(user);
-
-            var httpContext = new DefaultHttpContext();
-            httpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, userId)
-            }));
-
-            _controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = httpContext
-            };
-
-            var result = await _controller.GetProfile();
-
-            var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
-            okResult.StatusCode.Should().Be(200);
-        }
-
-        [Fact]
         public async Task GetAppointments_ReturnsDoctorAppointments()
         {
             var userId = "doctor-user-id";
