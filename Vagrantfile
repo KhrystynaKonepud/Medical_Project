@@ -10,9 +10,6 @@ Vagrant.configure("2") do |config|
   GITHUB_REPO = "https://github.com/KhrystynaKonepud/Medical_Project.git"
   BRANCH = "deploy-branch"
 
-  # ============================================
-  # UBUNTU 22.04 LTS
-  # ============================================
   config.vm.define "ubuntu", primary: true do |ubuntu|
     ubuntu.vm.box = "ubuntu/jammy64"
     ubuntu.vm.hostname = "medical-ubuntu"
@@ -25,26 +22,21 @@ Vagrant.configure("2") do |config|
       export DEBIAN_FRONTEND=noninteractive
       apt-get update -qq
       
-      # .NET SDK
       wget -q https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb
       dpkg -i packages-microsoft-prod.deb
       apt-get update -qq
       apt-get install -y dotnet-sdk-8.0 git curl
       
-      # Node.js
       curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
       apt-get install -y nodejs
       
-      # Clone & Build
       cd /home/vagrant
       git clone -b #{BRANCH} #{GITHUB_REPO}
       cd Medical_Project
       
-      # ВАЖЛИВО: Видаляємо папку tests (вона використовує .NET 9.0)
-      echo "Removing tests folder (uses .NET 9.0)..."
+      echo "Removing tests folder..."
       rm -rf tests
       
-      # Тепер збірка працюватиме
       dotnet restore
       dotnet build -c Release
       
@@ -55,7 +47,6 @@ Vagrant.configure("2") do |config|
         cd ..
       fi
       
-      # Startup script
       cat > /home/vagrant/run-app.sh << 'EOF'
 #!/bin/bash
 cd /home/vagrant/Medical_Project
@@ -68,9 +59,6 @@ EOF
     SHELL
   end
 
-  # ============================================
-  # DEBIAN 12
-  # ============================================
   config.vm.define "debian" do |debian|
     debian.vm.box = "debian/bookworm64"
     debian.vm.hostname = "medical-debian"
@@ -83,26 +71,21 @@ EOF
       export DEBIAN_FRONTEND=noninteractive
       apt-get update -qq
       
-      # .NET SDK
       wget -q https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb
       dpkg -i packages-microsoft-prod.deb
       apt-get update -qq
       apt-get install -y dotnet-sdk-8.0 git curl
       
-      # Node.js
       curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
       apt-get install -y nodejs
       
-      # Clone & Build
       cd /home/vagrant
       git clone -b #{BRANCH} #{GITHUB_REPO}
       cd Medical_Project
       
-      # ВАЖЛИВО: Видаляємо папку tests (вона використовує .NET 9.0)
-      echo "Removing tests folder (uses .NET 9.0)..."
+      echo "Removing tests folder..."
       rm -rf tests
       
-      # Тепер збірка працюватиме
       dotnet restore
       dotnet build -c Release
       
@@ -113,7 +96,6 @@ EOF
         cd ..
       fi
       
-      # Startup script
       cat > /home/vagrant/run-app.sh << 'EOF'
 #!/bin/bash
 cd /home/vagrant/Medical_Project
