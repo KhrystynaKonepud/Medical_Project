@@ -37,8 +37,8 @@ Vagrant.configure("2") do |config|
       echo "Removing tests folder..."
       rm -rf tests
       
-      dotnet restore
-      dotnet build -c Release
+      dotnet restore Medical_center.csproj
+      dotnet build Medical_center.csproj -c Release
       
       if [ -d "ClientApp" ]; then
         cd ClientApp
@@ -50,7 +50,7 @@ Vagrant.configure("2") do |config|
       cat > /home/vagrant/run-app.sh << 'EOF'
 #!/bin/bash
 cd /home/vagrant/Medical_Project
-dotnet run --urls "http://0.0.0.0:5000"
+dotnet run --project Medical_center.csproj --urls "http://0.0.0.0:5000"
 EOF
       chmod +x /home/vagrant/run-app.sh
       
@@ -86,8 +86,8 @@ EOF
       echo "Removing tests folder..."
       rm -rf tests
       
-      dotnet restore
-      dotnet build -c Release
+      dotnet restore Medical_center.csproj
+      dotnet build Medical_center.csproj -c Release
       
       if [ -d "ClientApp" ]; then
         cd ClientApp
@@ -99,7 +99,7 @@ EOF
       cat > /home/vagrant/run-app.sh << 'EOF'
 #!/bin/bash
 cd /home/vagrant/Medical_Project
-dotnet run --urls "http://0.0.0.0:5000"
+dotnet run --project Medical_center.csproj --urls "http://0.0.0.0:5000"
 EOF
       chmod +x /home/vagrant/run-app.sh
       
