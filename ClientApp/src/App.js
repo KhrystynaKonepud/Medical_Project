@@ -20,7 +20,7 @@ import DoctorAvailabilityPage from './pages/doctor/DoctorAvailabilityPage';
 import DoctorCreatemedicalrecord from './pages/doctor/DoctorCreatemedicalrecord';
 import DoctorEditMedicalRecord from './pages/doctor/DoctorEditMedicalRecord';
 import DoctorViewMedicalRecord from "./pages/doctor/DoctorViewMedicalRecord";
-import DoctorPrescriptions from "./pages/doctor/Doctorprescriptions";
+import DoctorPrescriptions from "./pages/doctor/DoctorPrescriptions";
 
 // === —“Œ–≤Õ » œ¿÷≤™Õ“¿ ===
 import PatientLayout from './pages/patient/PatientLayout';
