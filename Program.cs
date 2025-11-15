@@ -193,12 +193,50 @@ public partial class Program
 
         var app = builder.Build();
 
-        // Apply database migrations automatically
+        // ---------------- Database initialization with conflict prevention ----------------
         using (var scope = app.Services.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            //db.Database.Migrate();
-            db.Database.EnsureCreated();
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+
+            try
+            {
+                // Check if database can connect
+                var canConnect = await db.Database.CanConnectAsync();
+
+                if (app.Environment.IsDevelopment())
+                {
+                    // Development: Recreate database on each run to avoid migration conflicts
+                    logger.LogInformation("Development mode: Recreating database...");
+                    await db.Database.EnsureDeletedAsync();
+                    await db.Database.EnsureCreatedAsync();
+                    logger.LogInformation("Database recreated successfully");
+                }
+                else
+                {
+                    // Production: Try to migrate, if fails - create new
+                    logger.LogInformation("Production mode: Applying migrations...");
+                    try
+                    {
+                        await db.Database.MigrateAsync();
+                        logger.LogInformation("Migrations applied successfully");
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogWarning(ex, "Migration failed, attempting to create database...");
+                        await db.Database.EnsureCreatedAsync();
+                        logger.LogInformation("Database created successfully");
+                    }
+                }
+
+                // Seed roles and admin user
+                await IdentitySeed.SeedAsync(scope.ServiceProvider);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred while initializing the database");
+                throw;
+            }
         }
 
         if (app.Environment.IsDevelopment())
@@ -235,12 +273,6 @@ public partial class Program
             FileProvider = new PhysicalFileProvider(
                 Path.Combine(app.Environment.ContentRootPath, "ClientApp", "build"))
         });
-
-        // Сід ролей/адміна
-        using (var scope = app.Services.CreateScope())
-        {
-            await IdentitySeed.SeedAsync(scope.ServiceProvider);
-        }
 
         app.Run();
     }
