@@ -193,12 +193,23 @@ public partial class Program
 
         var app = builder.Build();
 
+        // Apply database migrations automatically
+        using (var scope = app.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            db.Database.Migrate();
+        }
+
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
         }
 
-        app.UseHttpsRedirection();
+        // Only redirect to HTTPS in production when configured
+        if (!app.Environment.IsDevelopment() && app.Configuration.GetValue<bool>("UseHttpsRedirection", true))
+        {
+            app.UseHttpsRedirection();
+        }
 
         // Видача зібраного React (ClientApp/build)
         app.UseStaticFiles(new StaticFileOptions
