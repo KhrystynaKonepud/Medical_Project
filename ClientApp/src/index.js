@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import './config/axiosConfig'; // Глобальна конфігурація axios (withCredentials)
 import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 

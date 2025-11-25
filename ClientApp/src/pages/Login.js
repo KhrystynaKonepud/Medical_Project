@@ -3,9 +3,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 
-// якщо не винесено глобально — залишимо тут
-axios.defaults.withCredentials = true;
-
 export default function Login() {
     const navigate = useNavigate();
     const location = useLocation();

@@ -12,6 +12,10 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;           // Jwt validation
 using System.Text;
 using System.IO;
+using Microsoft.OpenApi.Models;
+using Asp.Versioning;                            // API versioning
+using Asp.Versioning.ApiExplorer;                // API Explorer для Swagger
+using System.Linq;                               // LINQ для фільтрів Swagger
 
 public partial class Program
 {
@@ -189,7 +193,78 @@ public partial class Program
                 Path.Combine(builder.Environment.ContentRootPath, "keys")))
             .SetApplicationName("Medical_center");
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                // Ігнорування циклічних залежностей при серіалізації
+                options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+                // Опціонально: писати null значення
+                options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+            });
+
+        // ---------------- API Versioning ----------------
+        builder.Services.AddApiVersioning(options =>
+        {
+            options.DefaultApiVersion = new ApiVersion(1, 0);
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.ReportApiVersions = true;
+            options.ApiVersionReader = ApiVersionReader.Combine(
+                new UrlSegmentApiVersionReader(),
+                new HeaderApiVersionReader("X-Api-Version")
+            );
+        })
+        .AddMvc()
+        .AddApiExplorer(options =>
+        {
+            options.GroupNameFormat = "'v'VVV";
+            options.SubstituteApiVersionInUrl = true;
+        });
+
+        // ---------------- Swagger ----------------
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen(c =>
+        {
+            // Створюємо документи для кожної версії API
+            c.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "Medical Center API",
+                Version = "v1",
+                Description = "API версія 1.0 - базова функціональність"
+            });
+
+            c.SwaggerDoc("v2", new OpenApiInfo
+            {
+                Title = "Medical Center API",
+                Version = "v2",
+                Description = "API версія 2.0 - розширена функціональність зі статистикою"
+            });
+
+            // Додаємо підтримку JWT Bearer токенів
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "Введіть JWT токен. Приклад: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+            });
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+                }
+            });
+        });
 
         var app = builder.Build();
 
@@ -265,6 +340,25 @@ public partial class Program
         app.UseCors("AllowLocalAll");
         app.UseAuthentication();
         app.UseAuthorization();
+
+        // Swagger UI (тільки в Development)
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+
+                foreach (var description in provider.ApiVersionDescriptions)
+                {
+                    c.SwaggerEndpoint(
+                        $"/swagger/{description.GroupName}/swagger.json",
+                        $"Medical Center API {description.GroupName}");
+                }
+
+                c.RoutePrefix = "swagger";
+            });
+        }
 
         app.MapControllers();
 

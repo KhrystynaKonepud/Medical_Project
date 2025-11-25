@@ -39,7 +39,7 @@ namespace Medical_center.Data
             }
 
             // 3. За потреби можна додати тестового лікаря
-            var doctorEmail = "doctor@med.local";
+            var doctorEmail = "doctor@med.local11";
             if (await userManager.FindByEmailAsync(doctorEmail) == null)
             {
                 var doctorUser = new ApplicationUser

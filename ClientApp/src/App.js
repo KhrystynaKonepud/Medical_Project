@@ -1,17 +1,17 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-// === Публічні сторінки ===
+// === пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ===
 import Login from './pages/Login';
 import Register from './pages/Register';
 import HomePage from './pages/HomePage';
 
-// === Адмін-сторінки ===
+// === пїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ===
 import AdminDashboard from './pages/AdminDashboard';
 import CreateDoctor from './pages/CreateDoctor';
 import DoctorsList from './pages/DoctorsList';
 import EditDoctor from './pages/EditDoctor';
 
-// === СТОРІНКИ ЛІКАРЯ ТА НОВИЙ ЛЕЙАУТ ===
+// === пїЅпїЅпїЅРІпїЅпїЅпїЅ ЛІпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ ===
 import DoctorLayout from './pages/doctor/DoctorLayout';
 import DoctorProfile from './pages/doctor/DoctorProfile';
 import DoctorEditProfile from './pages/doctor/DoctorEditProfile';
@@ -22,7 +22,7 @@ import DoctorEditMedicalRecord from './pages/doctor/DoctorEditMedicalRecord';
 import DoctorViewMedicalRecord from "./pages/doctor/DoctorViewMedicalRecord";
 import DoctorPrescriptions from "./pages/doctor/DoctorPrescriptions";
 
-// === СТОРІНКИ ПАЦІЄНТА ===
+// === пїЅпїЅпїЅРІпїЅпїЅпїЅ пїЅпїЅЦІпїЅпїЅпїЅпїЅ ===
 import PatientLayout from './pages/patient/PatientLayout';
 import PatientProfile from './pages/patient/PatientProfile';
 import PatientDoctorsList from './pages/patient/PatientDoctorsList';
@@ -31,7 +31,11 @@ import PatientLabResults from './pages/patient/PatientLabResults';
 import PatientHistory from './pages/patient/PatientHistory';
 import PatientPrescriptions from './pages/patient/PatientPrescriptions';
 
-// Допоміжний лейаут для публічних сторінок
+// === API VERSIONING DEMO PAGES ===
+import PatientsListV1 from './pages/PatientsListV1';
+import PatientsListV2 from './pages/PatientsListV2';
+
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 const PublicLayout = ({ children }) => (
     <div className="container py-4">
         {children}
@@ -42,24 +46,28 @@ function App() {
     return (
         <Router>
             <Routes>
-                {/* Публічні маршрути з .container */}
+                {/* пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ .container */}
                 <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
                 <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
                 <Route path="/register" element={<PublicLayout><Register /></PublicLayout>} />
 
-                {/* Адмін-маршрути */}
+                {/* пїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ */}
                 <Route path="/admin/dashboard" element={<PublicLayout><AdminDashboard /></PublicLayout>} />
                 <Route path="/admin/createdoctor" element={<PublicLayout><CreateDoctor /></PublicLayout>} />
                 <Route path="/admin/doctors" element={<PublicLayout><DoctorsList /></PublicLayout>} />
                 <Route path="/admin/editdoctor/:id" element={<PublicLayout><EditDoctor /></PublicLayout>} />
 
-                {/* === МАРШРУТИ ЛІКАРЯ (З LAYOUT) === */}
+                {/* API Versioning Demo Pages */}
+                <Route path="/patients-v1" element={<PublicLayout><PatientsListV1 /></PublicLayout>} />
+                <Route path="/patients-v2" element={<PublicLayout><PatientsListV2 /></PublicLayout>} />
+
+                {/* === пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ЛІпїЅпїЅпїЅпїЅ (пїЅ LAYOUT) === */}
                 <Route path="/doctor/dashboard" element={<DoctorLayout />}>
                     <Route index element={<Navigate to="profile" replace />} />
 
-                    {/* Дочірні сторінки, що будуть рендеритись всередині DoctorLayout */}
+                    {/* пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ DoctorLayout */}
                     <Route path="profile" element={<DoctorProfile />} />
-                    <Route path="editprofile" element={<DoctorEditProfile />} /> {/* <-- ДОДАНО МАРШРУТ РЕДАГУВАННЯ */}
+                    <Route path="editprofile" element={<DoctorEditProfile />} /> {/* <-- пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ */}
                     <Route path="appointmentslist" element={<DoctorAppointmentslist />} />
                     <Route path="availability" element={<DoctorAvailabilityPage />} />
                     <Route path="createrecord/:appointmentId" element={<DoctorCreatemedicalrecord />} />
@@ -69,11 +77,11 @@ function App() {
 
                 </Route>
 
-                {/* === МАРШРУТИ ПАЦІЄНТА === */}
+                {/* === пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅЦІпїЅпїЅпїЅпїЅ === */}
                 <Route path="/patient/dashboard" element={<PatientLayout />}>
                     <Route index element={<Navigate to="profile" replace />} />
 
-                    {/* Дочірні сторінки, що будуть рендеритись всередині PatientLayout */}
+                    {/* пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ PatientLayout */}
                     <Route path="profile" element={<PatientProfile />} />
                     <Route path="doctors" element={<PatientDoctorsList />} />
                     <Route path="vaccination" element={<PatientVaccination />} />

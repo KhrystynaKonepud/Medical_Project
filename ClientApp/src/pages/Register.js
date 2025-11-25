@@ -2,9 +2,6 @@
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
-// Якщо не поставиш глобально в index.js:
-axios.defaults.withCredentials = true;
-
 const PHONE_RE = /^\+?380\d{9}$/;                          // +380XXXXXXXXX
 const PASSWORD_RE = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,16}$/; // 8–16, 1 велика, 1 цифра, 1 спец
 

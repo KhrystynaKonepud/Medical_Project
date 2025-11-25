@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { usePatient } from './PatientContext'; // ⬅️ ІМПОРТ
 
 export default function PatientProfile() {
@@ -87,6 +88,24 @@ export default function PatientProfile() {
         <div>
             <h1 className="display-5 mb-4">Профіль пацієнта</h1>
             <p className="lead">Ласкаво просимо, {welcomeMessage}!</p>
+
+            {/* Кнопки для демонстрації API Versioning */}
+            <div className="card shadow-sm mb-4">
+                <div className="card-header">
+                    <h5 className="mb-0">API Versioning Demo</h5>
+                </div>
+                <div className="card-body">
+                    <p className="text-muted mb-3">Демонстрація різних версій API:</p>
+                    <div className="d-flex gap-2">
+                        <Link to="/patients-v1" className="btn btn-info">
+                            Пацієнти v1 (базова версія)
+                        </Link>
+                        <Link to="/patients-v2" className="btn btn-success">
+                            Пацієнти v2 (розширена версія)
+                        </Link>
+                    </div>
+                </div>
+            </div>
 
             {/* Локальні помилки та повідомлення форми */}
             {formError && <div className="alert alert-warning">{formError}</div>}
