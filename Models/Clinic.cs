@@ -1,5 +1,8 @@
-﻿namespace Medical_center.Models
+using Medical_center.Attributes;
+
+namespace Medical_center.Models
 {
+    [GenerateApi]
     public class Clinic
     {
         public int Id { get; set; }

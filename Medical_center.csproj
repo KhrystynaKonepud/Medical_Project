@@ -5,6 +5,12 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <SpaRoot>ClientApp\</SpaRoot>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+
+    <!-- Збереження згенерованих файлів Source Generator на диск -->
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +21,8 @@
     <Compile Remove="tests/**" />
     <EmbeddedResource Remove="tests/**" />
     <None Remove="tests/**" />
+    <!-- Виключити згенеровані файли з компіляції (вони вже в пам'яті) -->
+    <Compile Remove="Generated/**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,5 +44,10 @@
     <Folder Include="ClientApp\src\pages\admin\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="SourceGenerator\Medical_center.SourceGenerator.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+  </ItemGroup>
 
 </Project>
