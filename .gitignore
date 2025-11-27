@@ -21,11 +21,26 @@ packages/
 *.DS_Store
 
 # User Secrets
-# Дуже важливо: цей файл містить секретні ключі, паролі, токени.
-# Ніколи не завантажуйте його на GitHub!
+# пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ.
+# НіпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ GitHub!
 appsettings.json
 appsettings.Development.json
 
 # Vagrant
 .vagrant/
 *.log
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test coverage
+coverage/
+*.coverage
+
+# Environment variables
+.env
+.env.local
+.env.test

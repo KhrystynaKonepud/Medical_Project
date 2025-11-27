@@ -47,6 +47,12 @@ public partial class Program
                 builder.Services.AddDbContext<ApplicationDbContext>(o => o.UseSqlite(connectionString));
                 break;
 
+            case "MySql":
+                connectionString = builder.Configuration.GetConnectionString("MySqlConnection")
+                    ?? throw new InvalidOperationException("Connection string 'MySqlConnection' not found.");
+                builder.Services.AddDbContext<ApplicationDbContext>(o => o.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+                break;
+
             default:
                 connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
                     ?? throw new InvalidOperationException("Default connection string not found.");
@@ -306,6 +312,9 @@ public partial class Program
 
                 // Seed roles and admin user
                 await IdentitySeed.SeedAsync(scope.ServiceProvider);
+
+                // Seed test data (doctors, patients, appointments)
+                await DataSeed.SeedAsync(scope.ServiceProvider);
             }
             catch (Exception ex)
             {
