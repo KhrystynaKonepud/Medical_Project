@@ -63,6 +63,71 @@ namespace Medical_center.Controllers.Api.V1
 
             return Ok(patient);
         }
+
+        // POST: api/v1/patients
+        [HttpPost]
+        public async Task<ActionResult<PatientDtoV1>> Create([FromBody] CreatePatientDto dto)
+        {
+            try
+            {
+                // Note: This is a simplified version for mobile app
+                // In production, you should create proper user account
+                var patient = new Patient
+                {
+                    EmergencyContact = dto.EmergencyContact ?? ""
+                };
+
+                _context.Patients.Add(patient);
+                await _context.SaveChangesAsync();
+
+                var result = new PatientDtoV1
+                {
+                    Id = patient.Id,
+                    FullName = dto.FullName,
+                    Email = dto.Email,
+                    PhoneNumber = dto.PhoneNumber,
+                    EmergencyContact = dto.EmergencyContact ?? ""
+                };
+
+                return CreatedAtAction(nameof(GetById), new { id = patient.Id }, result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Error creating patient", error = ex.Message });
+            }
+        }
+
+        // PUT: api/v1/patients/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdatePatientDto dto)
+        {
+            var patient = await _context.Patients.FindAsync(id);
+            if (patient == null)
+            {
+                return NotFound();
+            }
+
+            patient.EmergencyContact = dto.EmergencyContact ?? "";
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        // DELETE: api/v1/patients/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var patient = await _context.Patients.FindAsync(id);
+            if (patient == null)
+            {
+                return NotFound();
+            }
+
+            _context.Patients.Remove(patient);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 
     // DTO для версії 1.0 - базова інформація
@@ -73,5 +138,18 @@ namespace Medical_center.Controllers.Api.V1
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string EmergencyContact { get; set; }
+    }
+
+    public class CreatePatientDto
+    {
+        public string FullName { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+        public string? EmergencyContact { get; set; }
+    }
+
+    public class UpdatePatientDto
+    {
+        public string? EmergencyContact { get; set; }
     }
 }

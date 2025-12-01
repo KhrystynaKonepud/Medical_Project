@@ -124,7 +124,11 @@ public partial class Program
         builder.Services.AddCors(opt =>
         {
             opt.AddPolicy("AllowLocalAll", p =>
-                p.WithOrigins("https://localhost:7263", "https://127.0.0.1:7263")
+                p.SetIsOriginAllowed(origin =>
+                    origin.StartsWith("https://localhost") ||
+                    origin.StartsWith("https://127.0.0.1") ||
+                    origin.StartsWith("http://localhost") ||
+                    origin.StartsWith("http://127.0.0.1"))
                  .AllowAnyHeader()
                  .AllowAnyMethod()
                  .AllowCredentials());
@@ -285,35 +289,26 @@ public partial class Program
                 // Check if database can connect
                 var canConnect = await db.Database.CanConnectAsync();
 
-                if (app.Environment.IsDevelopment())
+                // Always try to migrate or create database without deleting existing data
+                logger.LogInformation("Ensuring database exists and is up to date...");
+
+                try
                 {
-                    // Development: Recreate database on each run to avoid migration conflicts
-                    logger.LogInformation("Development mode: Recreating database...");
-                    await db.Database.EnsureDeletedAsync();
-                    await db.Database.EnsureCreatedAsync();
-                    logger.LogInformation("Database recreated successfully");
+                    // Try to apply migrations first
+                    await db.Database.MigrateAsync();
+                    logger.LogInformation("Database migrations applied successfully");
                 }
-                else
+                catch (Exception)
                 {
-                    // Production: Try to migrate, if fails - create new
-                    logger.LogInformation("Production mode: Applying migrations...");
-                    try
-                    {
-                        await db.Database.MigrateAsync();
-                        logger.LogInformation("Migrations applied successfully");
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogWarning(ex, "Migration failed, attempting to create database...");
-                        await db.Database.EnsureCreatedAsync();
-                        logger.LogInformation("Database created successfully");
-                    }
+                    // If migrations fail, ensure database is created
+                    await db.Database.EnsureCreatedAsync();
+                    logger.LogInformation("Database created successfully");
                 }
 
-                // Seed roles and admin user
+                // Seed roles and admin user (will only seed if they don't exist)
                 await IdentitySeed.SeedAsync(scope.ServiceProvider);
 
-                // Seed test data (doctors, patients, appointments)
+                // Seed test data (doctors, patients, appointments) - only if tables are empty
                 await DataSeed.SeedAsync(scope.ServiceProvider);
             }
             catch (Exception ex)

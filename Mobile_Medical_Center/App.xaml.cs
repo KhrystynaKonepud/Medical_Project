@@ -11,19 +11,27 @@ namespace Mobile_Medical_Center
         {
             try
             {
-                Console.WriteLine("🟢 App constructor started");
                 InitializeComponent();
-                Console.WriteLine("🟢 InitializeComponent completed");
-
-                // Initialize AppShell with full navigation
                 MainPage = new AppShell();
-                Console.WriteLine("🟢 MainPage set to AppShell");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"🔴 App constructor ERROR: {ex.Message}");
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
-                throw;
+
+                // Show error page
+                MainPage = new ContentPage
+                {
+                    BackgroundColor = Colors.Red,
+                    Content = new Label
+                    {
+                        Text = $"ERROR: {ex.Message}",
+                        TextColor = Colors.White,
+                        FontSize = 20,
+                        VerticalOptions = LayoutOptions.Center,
+                        HorizontalTextAlignment = TextAlignment.Center
+                    }
+                };
             }
         }
 
@@ -31,7 +39,6 @@ namespace Mobile_Medical_Center
         {
             base.OnStart();
             Console.WriteLine("🟢 OnStart called");
-            // Navigation disabled for testing - just show the shell with all tabs visible
         }
     }
 }

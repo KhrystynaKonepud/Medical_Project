@@ -37,9 +37,9 @@ namespace Mobile_Medical_Center
                     });
 
                 LogToFile("Services registration starting...");
-                // Register Services (BEFORE database is initialized)
+                // Register Services - Thin client pattern (API-based, no local database)
                 builder.Services.AddSingleton<IAuthService, AuthService>();
-                builder.Services.AddSingleton<IDatabaseService, DatabaseService>();
+                builder.Services.AddSingleton<IDatabaseService, ApiClientService>();
 
                 // Register Pages as Transient (lazy loading, not created at startup)
                 builder.Services.AddTransient<LoginPage>();
@@ -61,9 +61,7 @@ namespace Mobile_Medical_Center
                 // Store service provider for ServiceHelper
                 ServiceHelper.Services = mauiApp.Services;
 
-                // Initialize database synchronously before returning
-                LogToFile("About to initialize database...");
-                InitializeDatabaseSync(mauiApp);
+                // No local database to initialize - thin client uses API
                 LogToFile("========== MauiProgram.CreateMauiApp COMPLETED ==========");
 
                 return mauiApp;
@@ -78,35 +76,5 @@ namespace Mobile_Medical_Center
             }
         }
 
-        private static void InitializeDatabaseSync(MauiApp app)
-        {
-            try
-            {
-                LogToFile("Starting database initialization...");
-
-                var dbService = app.Services.GetService<IDatabaseService>();
-                if (dbService == null)
-                {
-                    LogToFile("ERROR: DatabaseService not resolved from DI container");
-                    return;
-                }
-
-                LogToFile("DatabaseService resolved, initializing database...");
-
-                // Synchronously wait for database initialization to complete
-                dbService.InitializeAsync().GetAwaiter().GetResult();
-
-                LogToFile("✓ Database initialized successfully");
-            }
-            catch (Exception ex)
-            {
-                LogToFile($"✗ Database initialization error: {ex.Message}");
-                LogToFile($"Exception type: {ex.GetType().FullName}");
-                LogToFile($"Stack trace: {ex.StackTrace}");
-                Debug.WriteLine($"✗ Database initialization error: {ex.Message}");
-                Debug.WriteLine($"Exception type: {ex.GetType().FullName}");
-                Debug.WriteLine($"Stack trace: {ex.StackTrace}");
-            }
-        }
     }
 }

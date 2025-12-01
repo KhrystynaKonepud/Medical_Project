@@ -19,7 +19,7 @@ namespace Mobile_Medical_Center.Services
         private const string TokenKey = "auth_token";
         private const string UserEmailKey = "user_email";
         private readonly HttpClient _httpClient;
-        private static string ApiBaseUrl => SecureStorage.GetAsync("api_base_url").Result ?? "https://localhost:7041/api/auth";
+        private static string ApiBaseUrl => SecureStorage.GetAsync("api_base_url").Result ?? "https://localhost:7263/api/auth";
 
         public bool IsAuthenticated => !string.IsNullOrEmpty(GetToken());
         public string CurrentUserEmail
