@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mobile_Medical_Center.Views.Pages.PatientsPage"
+             Title="Пацієнти">
+
+    <Grid RowDefinitions="Auto,*,Auto" Padding="0" RowSpacing="0" ColumnSpacing="0">
+        <!-- Add Patient Section -->
+        <StackLayout Padding="15" Spacing="10" BackgroundColor="#f5f5f5">
+            <Label Text="Додати пацієнта" FontAttributes="Bold" FontSize="16"/>
+
+            <Entry Placeholder="ПІБ" Text="{Binding NewPatientName}"/>
+            <Entry Placeholder="Email" Text="{Binding NewPatientEmail}" Keyboard="Email"/>
+            <Entry Placeholder="Телефон" Text="{Binding NewPatientPhone}" Keyboard="Telephone"/>
+            <DatePicker Date="{Binding NewPatientDOB}"/>
+
+            <Button Text="Додати"
+                    Command="{Binding AddPatientCommand}"
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}"
+                    CornerRadius="8"/>
+        </StackLayout>
+
+        <!-- Patients List -->
+        <RefreshView Grid.Row="1"
+                     Command="{Binding LoadPatientsCommand}"
+                     IsRefreshing="{Binding IsLoading}">
+            <CollectionView ItemsSource="{Binding Patients}"
+                           SelectionMode="Single"
+                           SelectionChangedCommand="{Binding SelectionChangedCommand}"
+                           SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="15" Spacing="8"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark=#2C2C2C}"
+                                    Margin="0,0,0,1">
+                            <Label Text="{Binding FullName}" FontAttributes="Bold" FontSize="16"/>
+                            <Label Text="{Binding Email}" FontSize="14" TextColor="{StaticResource Gray500}"/>
+                            <Label Text="{Binding PhoneNumber}" FontSize="12"/>
+                            <Label Text="{Binding DateOfBirth, StringFormat='ДН: {0:dd.MM.yyyy}'}" FontSize="12"/>
+
+                            <Button Text="Видалити"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeletePatientCommand}"
+                                    CommandParameter="{Binding .}"
+                                    BackgroundColor="{StaticResource Danger}"
+                                    TextColor="White"
+                                    FontSize="12"
+                                    Padding="10,5"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <StackLayout Padding="20" Spacing="10" VerticalOptions="Center" HorizontalOptions="Center">
+                        <Label Text="Немає пацієнтів" HorizontalTextAlignment="Center"/>
+                        <Label Text="Натисніть кнопку вище, щоб додати пацієнта" HorizontalTextAlignment="Center" FontSize="12"/>
+                    </StackLayout>
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </RefreshView>
+
+        <!-- Loading Indicator -->
+        <ActivityIndicator Grid.Row="2"
+                          IsRunning="{Binding IsLoading}"
+                          IsVisible="{Binding IsLoading}"
+                          Color="{StaticResource Primary}"/>
+    </Grid>
+</ContentPage>

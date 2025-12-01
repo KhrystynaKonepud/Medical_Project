@@ -23,6 +23,10 @@
     <None Remove="tests/**" />
     <!-- Виключити згенеровані файли з компіляції (вони вже в пам'яті) -->
     <Compile Remove="Generated/**" />
+    <!-- Виключити мобільний проект з основної сборки -->
+    <Compile Remove="Mobile_Medical_Center/**" />
+    <EmbeddedResource Remove="Mobile_Medical_Center/**" />
+    <None Remove="Mobile_Medical_Center/**" />
   </ItemGroup>
 
   <ItemGroup>

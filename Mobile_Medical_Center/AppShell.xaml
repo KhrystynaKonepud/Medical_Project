@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Mobile_Medical_Center.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Mobile_Medical_Center.Views.Pages"
+    Shell.FlyoutBehavior="Flyout"
+    Title="Медичний Центр">
+
+    <!-- Login Route - not shown by default -->
+    <ShellContent Title="Вхід" Route="login" ContentTemplate="{DataTemplate local:LoginPage}" IsVisible="False" />
+
+    <!-- Main Tabbed Interface -->
+    <TabBar>
+        <ShellContent Title="Панель" Route="dashboard" ContentTemplate="{DataTemplate local:DashboardPage}" />
+        <ShellContent Title="Лікарі" Route="doctors" ContentTemplate="{DataTemplate local:DoctorsPage}" />
+        <ShellContent Title="Пацієнти" Route="patients" ContentTemplate="{DataTemplate local:PatientsPage}" />
+        <ShellContent Title="Записи" Route="appointments" ContentTemplate="{DataTemplate local:AppointmentsPage}" />
+        <ShellContent Title="Про додаток" Route="about" ContentTemplate="{DataTemplate local:AboutPage}" />
+    </TabBar>
+
+</Shell>

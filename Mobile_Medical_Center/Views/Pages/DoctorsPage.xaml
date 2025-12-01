@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mobile_Medical_Center.Views.Pages.DoctorsPage"
+             Title="Лікарі">
+
+    <Grid RowDefinitions="Auto,*,Auto" Padding="0" RowSpacing="0" ColumnSpacing="0">
+        <!-- Add Doctor Section -->
+        <StackLayout Padding="15" Spacing="10" BackgroundColor="#f5f5f5">
+            <Label Text="Додати лікаря" FontAttributes="Bold" FontSize="16"/>
+
+            <Entry Placeholder="ПІБ" Text="{Binding NewDoctorName}"/>
+            <Entry Placeholder="Спеціалізація" Text="{Binding NewDoctorSpecialization}"/>
+            <Entry Placeholder="Років досвіду" Text="{Binding NewDoctorExperience, StringFormat='{0}'}" Keyboard="Numeric"/>
+
+            <Button Text="Додати"
+                    Command="{Binding AddDoctorCommand}"
+                    CornerRadius="8"/>
+        </StackLayout>
+
+        <!-- Doctors List -->
+        <RefreshView Grid.Row="1"
+                     Command="{Binding LoadDoctorsCommand}"
+                     IsRefreshing="{Binding IsLoading}">
+            <CollectionView ItemsSource="{Binding Doctors}"
+                           SelectionMode="Single"
+                           SelectionChangedCommand="{Binding SelectionChangedCommand}"
+                           SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="15" Spacing="8"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark=#2C2C2C}"
+                                    Margin="0,0,0,1">
+                            <Label Text="{Binding FullName}" FontAttributes="Bold" FontSize="16"/>
+                            <Label Text="{Binding Specialization}" FontSize="14" TextColor="{StaticResource Gray500}"/>
+                            <StackLayout Orientation="Horizontal" Spacing="10">
+                                <Label Text="{Binding ExperienceYears, StringFormat='Досвід: {0} років'}" FontSize="12"/>
+                                <Label Text="{Binding Rating, StringFormat='Рейтинг: {0:F1}'}" FontSize="12"/>
+                            </StackLayout>
+
+                            <Button Text="Видалити"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteDoctorCommand}"
+                                    CommandParameter="{Binding .}"
+                                    BackgroundColor="{StaticResource Danger}"
+                                    TextColor="White"
+                                    FontSize="12"
+                                    Padding="10,5"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <StackLayout Padding="20" Spacing="10" VerticalOptions="Center" HorizontalOptions="Center">
+                        <Label Text="Немає лікарів" HorizontalTextAlignment="Center"/>
+                        <Label Text="Натисніть кнопку вище, щоб додати лікаря" HorizontalTextAlignment="Center" FontSize="12"/>
+                    </StackLayout>
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </RefreshView>
+
+        <!-- Loading Indicator -->
+        <ActivityIndicator Grid.Row="2"
+                          IsRunning="{Binding IsLoading}"
+                          IsVisible="{Binding IsLoading}"
+                          Color="{StaticResource Primary}"/>
+    </Grid>
+</ContentPage>

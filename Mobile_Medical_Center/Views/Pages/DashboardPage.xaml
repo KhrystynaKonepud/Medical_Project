@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mobile_Medical_Center.Views.Pages.DashboardPage"
+             Title="Панель управління">
+
+    <VerticalStackLayout Padding="20" Spacing="15">
+        <Label Text="Статистика" FontSize="24" FontAttributes="Bold"/>
+
+        <!-- Stats Grid -->
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="10" RowSpacing="10">
+            <!-- Total Doctors -->
+            <Frame Grid.Column="0" CornerRadius="10" Padding="15" HasShadow="True">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Лікарів" FontSize="12"/>
+                    <Label Text="{Binding TotalDoctors}" FontSize="20" FontAttributes="Bold"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Total Patients -->
+            <Frame Grid.Column="1" CornerRadius="10" Padding="15" HasShadow="True">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Пацієнтів" FontSize="12"/>
+                    <Label Text="{Binding TotalPatients}" FontSize="20" FontAttributes="Bold"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Total Appointments -->
+            <Frame Grid.Column="0" CornerRadius="10" Padding="15" HasShadow="True">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Записів" FontSize="12"/>
+                    <Label Text="{Binding TotalAppointments}" FontSize="20" FontAttributes="Bold"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Completed -->
+            <Frame Grid.Column="1" CornerRadius="10" Padding="15" HasShadow="True">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Виконаних" FontSize="12"/>
+                    <Label Text="{Binding CompletedAppointments}" FontSize="20" FontAttributes="Bold"/>
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+
+        <!-- Loading Indicator -->
+        <ActivityIndicator IsRunning="{Binding IsLoading}"
+                          IsVisible="{Binding IsLoading}"
+                          Margin="0,20"/>
+    </VerticalStackLayout>
+
+</ContentPage>

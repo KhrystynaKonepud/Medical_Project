@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mobile_Medical_Center.Views.Pages.AboutPage"
+             Title="Про додаток">
+
+    <ScrollView Padding="20" BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}">
+        <StackLayout Spacing="20">
+            <!-- Logo -->
+            <Label Text="Медичний Центр"
+                   FontSize="32"
+                   FontAttributes="Bold"
+                   HorizontalTextAlignment="Center"
+                   TextColor="{StaticResource Primary}"/>
+
+            <Label Text="Мобільний додаток"
+                   FontSize="16"
+                   HorizontalTextAlignment="Center"
+                   TextColor="{StaticResource Gray500}"/>
+
+            <!-- Version -->
+            <Frame CornerRadius="10" Padding="15" HasShadow="True">
+                <StackLayout Spacing="5">
+                    <Label Text="Версія" FontAttributes="Bold" FontSize="14"/>
+                    <Label Text="1.0.0" FontSize="16"/>
+                </StackLayout>
+            </Frame>
+
+            <!-- About Section -->
+            <StackLayout Spacing="10">
+                <Label Text="Про програму" FontAttributes="Bold" FontSize="18"/>
+                <Label Text="Мобільний додаток Медичного Центру дозволяє користувачам:
+
+• Переглядати список лікарів та їхні спеціалізації
+• Додавати та керувати пацієнтами
+• Бронювати записи на прийом
+• Відслідковувати статус записів
+• Переглядати статистику та графіки використання
+
+Додаток розроблений з використанням технології .NET MAUI для кросплатформної підтримки на різних операційних системах."
+                       FontSize="14"
+                       LineHeight="1.5"
+                       TextColor="{StaticResource Gray700}"/>
+            </StackLayout>
+
+            <!-- Features -->
+            <StackLayout Spacing="10">
+                <Label Text="Функціональність" FontAttributes="Bold" FontSize="18"/>
+                <StackLayout Spacing="8">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="✓" FontSize="16" TextColor="{StaticResource Primary}" WidthRequest="30"/>
+                        <Label Text="Локальна база даних SQLite" FontSize="14"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="✓" FontSize="16" TextColor="{StaticResource Primary}" WidthRequest="30"/>
+                        <Label Text="MVVM архітектура" FontSize="14"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="✓" FontSize="16" TextColor="{StaticResource Primary}" WidthRequest="30"/>
+                        <Label Text="Інтеграція з Identity Server" FontSize="14"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="✓" FontSize="16" TextColor="{StaticResource Primary}" WidthRequest="30"/>
+                        <Label Text="Анімовані екрани завантаження" FontSize="14"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="✓" FontSize="16" TextColor="{StaticResource Primary}" WidthRequest="30"/>
+                        <Label Text="Графіки та діаграми даних" FontSize="14"/>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+
+            <!-- Platforms -->
+            <StackLayout Spacing="10">
+                <Label Text="Підтримувані платформи" FontAttributes="Bold" FontSize="18"/>
+                <Label Text="• Windows
+• macOS
+• Linux
+• iOS (через компіляцію)
+• Android (через компіляцію)"
+                       FontSize="14"
+                       LineHeight="1.5"/>
+            </StackLayout>
+
+            <!-- Technology Stack -->
+            <StackLayout Spacing="10">
+                <Label Text="Технологічний стек" FontAttributes="Bold" FontSize="18"/>
+                <Label Text="• .NET 8.0
+• MAUI (Multi-platform App UI)
+• Entity Framework Core
+• SQLite
+• MVVM Pattern"
+                       FontSize="14"
+                       LineHeight="1.5"/>
+            </StackLayout>
+
+            <!-- Contact -->
+            <Frame CornerRadius="10" Padding="15" HasShadow="True" BackgroundColor="#f5f5f5">
+                <StackLayout Spacing="5">
+                    <Label Text="Контакти розробника" FontAttributes="Bold" FontSize="14"/>
+                    <Label Text="medical-center@example.com" FontSize="12" TextColor="{StaticResource Gray600}"/>
+                </StackLayout>
+            </Frame>
+
+            <!-- Copyright -->
+            <Label Text="© 2024 Медичний Центр. Всі права захищені."
+                   HorizontalTextAlignment="Center"
+                   FontSize="12"
+                   TextColor="{StaticResource Gray500}"
+                   Margin="0,20,0,0"/>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
