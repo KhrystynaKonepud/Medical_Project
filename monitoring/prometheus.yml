@@ -1,0 +1,9 @@
+﻿global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: 'dotnet-backend'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['host.docker.internal:5000'] 
+      # host.docker.internal дозволяє докеру достукатися до твого локального .NET застосунку

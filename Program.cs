@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;                 // SameSiteMode, CookieSecurePo
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.IdentityModel.Tokens;           // Jwt validation
+using Microsoft.IdentityModel.Tokens;            // Jwt validation
 using System.Text;
 using System.IO;
 using Microsoft.OpenApi.Models;
@@ -17,11 +17,34 @@ using Asp.Versioning;                            // API versioning
 using Asp.Versioning.ApiExplorer;                // API Explorer для Swagger
 using System.Linq;                               // LINQ для фільтрів Swagger
 
+// === OpenTelemetry Imports ===
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+
 public partial class Program
 {
     public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        // === ПОЧАТОК БЛОКУ OPENTELEMETRY ===
+        // Додаємо збір метрик та трейсинг
+        builder.Services.AddOpenTelemetry()
+            .WithMetrics(metrics => metrics
+                .AddAspNetCoreInstrumentation() // Метрики вхідних HTTP запитів
+                .AddHttpClientInstrumentation() // Метрики вихідних запитів
+                .AddRuntimeInstrumentation()    // GC, пам'ять, CPU (вимога лабораторної)
+                .AddPrometheusExporter())       // Експорт у форматі для Prometheus
+            .WithTracing(tracing => tracing
+                .AddAspNetCoreInstrumentation()
+                .AddHttpClientInstrumentation()
+                .AddZipkinExporter(options =>
+                {
+                    // Вказуємо адресу Zipkin контейнера
+                    options.Endpoint = new Uri("http://localhost:9411/api/v2/spans");
+                }));
+        // === КІНЕЦЬ БЛОКУ OPENTELEMETRY ===
 
         // ---------------- DB provider switch ----------------
         var dbProvider = builder.Configuration.GetValue<string>("DatabaseProvider") ?? "SqlServer";
@@ -147,7 +170,7 @@ public partial class Program
                 options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
                 options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
 
-                options.CallbackPath = "/signin-google";                           // стандартний callback
+                options.CallbackPath = "/signin-google";                    // стандартний callback
                 options.SignInScheme = IdentityConstants.ExternalScheme;
                 options.CorrelationCookie.SameSite = SameSiteMode.Lax;
                 options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.Always;
@@ -334,12 +357,17 @@ public partial class Program
             app.UseHttpsRedirection();
         }
 
-        // Видача зібраного React (ClientApp/build)
-        app.UseStaticFiles(new StaticFileOptions
+        // --- ВИПРАВЛЕННЯ: Безпечне підключення статики ---
+        var spaPath = Path.Combine(app.Environment.ContentRootPath, "ClientApp", "build");
+
+        // Видача зібраного React (ClientApp/build), тільки якщо папка існує
+        if (Directory.Exists(spaPath))
         {
-            FileProvider = new PhysicalFileProvider(
-                Path.Combine(app.Environment.ContentRootPath, "ClientApp", "build"))
-        });
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(spaPath)
+            });
+        }
 
         app.UseRouting();
 
@@ -371,11 +399,18 @@ public partial class Program
 
         app.MapControllers();
 
-        app.MapFallbackToFile("index.html", new StaticFileOptions
+        // --- OpenTelemetry Endpoint ---
+        // Цей рядок відкриває доступ для Prometheus до метрик за адресою /metrics
+        app.MapPrometheusScrapingEndpoint();
+
+        // --- ВИПРАВЛЕННЯ: Безпечний fallback для SPA ---
+        if (Directory.Exists(spaPath))
         {
-            FileProvider = new PhysicalFileProvider(
-                Path.Combine(app.Environment.ContentRootPath, "ClientApp", "build"))
-        });
+            app.MapFallbackToFile("index.html", new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(spaPath)
+            });
+        }
 
         app.Run();
     }

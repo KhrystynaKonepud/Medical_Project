@@ -1,0 +1,33 @@
+﻿version: '3.8'
+
+services:
+  # Збирає метрики (цифри: CPU, RAM, к-сть запитів)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: lab6_prometheus
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  # Збирає трейси (хто кого викликав і скільки це зайняло часу)
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: lab6_zipkin
+    ports:
+      - "9411:9411"
+
+  # Малює красиві графіки
+  grafana:
+    image: grafana/grafana:latest
+    container_name: lab6_grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+      - zipkin

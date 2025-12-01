@@ -1,0 +1,375 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Компилятор Microsoft (R) Visual C#",
+        "version": "4.11.0.0",
+        "fileVersion": "4.11.0-3.24468.6 (b4e5d1dd)",
+        "semanticVersion": "4.11.0",
+        "language": "ru-RU"
+      },
+      "results": [
+        {
+          "ruleId": "S3260",
+          "level": "warning",
+          "message": "Private classes which are not derived in the current assembly should be marked as 'sealed'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/%D0%A1%D0%B0%D0%BC%D0%BE%D1%83%D1%87%D0%BA%D0%B0/3%20%D0%BA%D1%83%D1%80%D1%81%201%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/%D0%9A%D1%80%D0%BE%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D0%B0/%D0%BB%D0%B0%D0%B1%D0%B05/SourceGenerator/ApiGenerator.cs",
+                "region": {
+                  "startLine": 281,
+                  "startColumn": 23,
+                  "endLine": 281,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "RS1036",
+          "level": "warning",
+          "message": "\"Medical_center.SourceGenerator.ApiGenerator\": проект, содержащий анализаторы или исходные генераторы, должен указывать свойство \"<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>\"",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/%D0%A1%D0%B0%D0%BC%D0%BE%D1%83%D1%87%D0%BA%D0%B0/3%20%D0%BA%D1%83%D1%80%D1%81%201%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/%D0%9A%D1%80%D0%BE%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D0%B0/%D0%BB%D0%B0%D0%B1%D0%B05/SourceGenerator/ApiGenerator.cs",
+                "region": {
+                  "startLine": 12,
+                  "startColumn": 18,
+                  "endLine": 12,
+                  "endColumn": 30
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1192",
+          "level": "warning",
+          "message": "Define a constant instead of using this literal '        {' 7 times.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/%D0%A1%D0%B0%D0%BC%D0%BE%D1%83%D1%87%D0%BA%D0%B0/3%20%D0%BA%D1%83%D1%80%D1%81%201%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/%D0%9A%D1%80%D0%BE%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D0%B0/%D0%BB%D0%B0%D0%B1%D0%B05/SourceGenerator/ApiGenerator.cs",
+                "region": {
+                  "startLine": 112,
+                  "startColumn": 27,
+                  "endLine": 112,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/%D0%A1%D0%B0%D0%BC%D0%BE%D1%83%D1%87%D0%BA%D0%B0/3%20%D0%BA%D1%83%D1%80%D1%81%201%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/%D0%9A%D1%80%D0%BE%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D0%B0/%D0%BB%D0%B0%D0%B1%D0%B05/SourceGenerator/ApiGenerator.cs",
+                "region": {
+                  "startLine": 160,
+                  "startColumn": 27,
+                  "endLine": 160,
+                  "endColumn": 38
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/%D0%A1%D0%B0%D0%BC%D0%BE%D1%83%D1%87%D0%BA%D0%B0/3%20%D0%BA%D1%83%D1%80%D1%81%201%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/%D0%9A%D1%80%D0%BE%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D0%B0/%D0%BB%D0%B0%D0%B1%D0%B05/SourceGenerator/ApiGenerator.cs",
+                "region": {
+                  "startLine": 168,
+                  "startColumn": 27,
+                  "endLine": 168,
+                  "endColumn": 38
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/%D0%A1%D0%B0%D0%BC%D0%BE%D1%83%D1%87%D0%BA%D0%B0/3%20%D0%BA%D1%83%D1%80%D1%81%201%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/%D0%9A%D1%80%D0%BE%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D0%B0/%D0%BB%D0%B0%D0%B1%D0%B05/SourceGenerator/ApiGenerator.cs",
+                "region": {
+                  "startLine": 179,
+                  "startColumn": 27,
+                  "endLine": 179,
+                  "endColumn": 38
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/%D0%A1%D0%B0%D0%BC%D0%BE%D1%83%D1%87%D0%BA%D0%B0/3%20%D0%BA%D1%83%D1%80%D1%81%201%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/%D0%9A%D1%80%D0%BE%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D0%B0/%D0%BB%D0%B0%D0%B1%D0%B05/SourceGenerator/ApiGenerator.cs",
+                "region": {
+                  "startLine": 189,
+                  "startColumn": 27,
+                  "endLine": 189,
+                  "endColumn": 38
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/%D0%A1%D0%B0%D0%BC%D0%BE%D1%83%D1%87%D0%BA%D0%B0/3%20%D0%BA%D1%83%D1%80%D1%81%201%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/%D0%9A%D1%80%D0%BE%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D0%B0/%D0%BB%D0%B0%D0%B1%D0%B05/SourceGenerator/ApiGenerator.cs",
+                "region": {
+                  "startLine": 217,
+                  "startColumn": 27,
+                  "endLine": 217,
+                  "endColumn": 38
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/%D0%A1%D0%B0%D0%BC%D0%BE%D1%83%D1%87%D0%BA%D0%B0/3%20%D0%BA%D1%83%D1%80%D1%81%201%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/%D0%9A%D1%80%D0%BE%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D0%B0/%D0%BB%D0%B0%D0%B1%D0%B05/SourceGenerator/ApiGenerator.cs",
+                "region": {
+                  "startLine": 236,
+                  "startColumn": 27,
+                  "endLine": 236,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": null,
+              "1": null,
+              "2": null,
+              "3": null,
+              "4": null,
+              "5": null
+            }
+          }
+        },
+        {
+          "ruleId": "S1192",
+          "level": "warning",
+          "message": "Define a constant instead of using this literal '        }' 7 times.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/%D0%A1%D0%B0%D0%BC%D0%BE%D1%83%D1%87%D0%BA%D0%B0/3%20%D0%BA%D1%83%D1%80%D1%81%201%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/%D0%9A%D1%80%D0%BE%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D0%B0/%D0%BB%D0%B0%D0%B1%D0%B05/SourceGenerator/ApiGenerator.cs",
+                "region": {
+                  "startLine": 126,
+                  "startColumn": 27,
+                  "endLine": 126,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/%D0%A1%D0%B0%D0%BC%D0%BE%D1%83%D1%87%D0%BA%D0%B0/3%20%D0%BA%D1%83%D1%80%D1%81%201%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/%D0%9A%D1%80%D0%BE%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D0%B0/%D0%BB%D0%B0%D0%B1%D0%B05/SourceGenerator/ApiGenerator.cs",
+                "region": {
+                  "startLine": 162,
+                  "startColumn": 27,
+                  "endLine": 162,
+                  "endColumn": 38
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/%D0%A1%D0%B0%D0%BC%D0%BE%D1%83%D1%87%D0%BA%D0%B0/3%20%D0%BA%D1%83%D1%80%D1%81%201%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/%D0%9A%D1%80%D0%BE%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D0%B0/%D0%BB%D0%B0%D0%B1%D0%B05/SourceGenerator/ApiGenerator.cs",
+                "region": {
+                  "startLine": 173,
+                  "startColumn": 27,
+                  "endLine": 173,
+                  "endColumn": 38
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/%D0%A1%D0%B0%D0%BC%D0%BE%D1%83%D1%87%D0%BA%D0%B0/3%20%D0%BA%D1%83%D1%80%D1%81%201%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/%D0%9A%D1%80%D0%BE%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D0%B0/%D0%BB%D0%B0%D0%B1%D0%B05/SourceGenerator/ApiGenerator.cs",
+                "region": {
+                  "startLine": 183,
+                  "startColumn": 27,
+                  "endLine": 183,
+                  "endColumn": 38
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/%D0%A1%D0%B0%D0%BC%D0%BE%D1%83%D1%87%D0%BA%D0%B0/3%20%D0%BA%D1%83%D1%80%D1%81%201%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/%D0%9A%D1%80%D0%BE%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D0%B0/%D0%BB%D0%B0%D0%B1%D0%B05/SourceGenerator/ApiGenerator.cs",
+                "region": {
+                  "startLine": 211,
+                  "startColumn": 27,
+                  "endLine": 211,
+                  "endColumn": 38
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/%D0%A1%D0%B0%D0%BC%D0%BE%D1%83%D1%87%D0%BA%D0%B0/3%20%D0%BA%D1%83%D1%80%D1%81%201%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/%D0%9A%D1%80%D0%BE%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D0%B0/%D0%BB%D0%B0%D0%B1%D0%B05/SourceGenerator/ApiGenerator.cs",
+                "region": {
+                  "startLine": 230,
+                  "startColumn": 27,
+                  "endLine": 230,
+                  "endColumn": 38
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/%D0%A1%D0%B0%D0%BC%D0%BE%D1%83%D1%87%D0%BA%D0%B0/3%20%D0%BA%D1%83%D1%80%D1%81%201%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/%D0%9A%D1%80%D0%BE%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D0%B0/%D0%BB%D0%B0%D0%B1%D0%B05/SourceGenerator/ApiGenerator.cs",
+                "region": {
+                  "startLine": 242,
+                  "startColumn": 27,
+                  "endLine": 242,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": null,
+              "1": null,
+              "2": null,
+              "3": null,
+              "4": null,
+              "5": null
+            }
+          }
+        },
+        {
+          "ruleId": "S2325",
+          "level": "warning",
+          "message": "Make 'IsNavigationProperty' a static method.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/%D0%A1%D0%B0%D0%BC%D0%BE%D1%83%D1%87%D0%BA%D0%B0/3%20%D0%BA%D1%83%D1%80%D1%81%201%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/%D0%9A%D1%80%D0%BE%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D0%B0/%D0%BB%D0%B0%D0%B1%D0%B05/SourceGenerator/ApiGenerator.cs",
+                "region": {
+                  "startLine": 250,
+                  "startColumn": 22,
+                  "endLine": 250,
+                  "endColumn": 42
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S3267",
+          "level": "warning",
+          "message": "Loop should be simplified by calling Select(prop => prop.Name))",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/%D0%A1%D0%B0%D0%BC%D0%BE%D1%83%D1%87%D0%BA%D0%B0/3%20%D0%BA%D1%83%D1%80%D1%81%201%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/%D0%9A%D1%80%D0%BE%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D0%B0/%D0%BB%D0%B0%D0%B1%D0%B05/SourceGenerator/ApiGenerator.cs",
+                "region": {
+                  "startLine": 223,
+                  "startColumn": 34,
+                  "endLine": 223,
+                  "endColumn": 44
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "RS1036": {
+          "id": "RS1036",
+          "shortDescription": "Укажите параметр принудительного применения API, запрещенного для анализатора",
+          "fullDescription": "Проект, содержащий анализаторы или исходные генераторы, должен указывать свойство \"<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>\"",
+          "defaultLevel": "warning",
+          "properties": {
+            "category": "MicrosoftCodeAnalysisCorrectness",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Telemetry"
+            ]
+          }
+        },
+        "S1192": {
+          "id": "S1192",
+          "shortDescription": "String literals should not be duplicated",
+          "fullDescription": "Duplicated string literals make the process of refactoring complex and error-prone, as any change would need to be propagated on all occurrences.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-1192",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": false,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S2325": {
+          "id": "S2325",
+          "shortDescription": "Methods and properties that don't access instance data should be static",
+          "fullDescription": "Methods and properties that don’t access instance data should be marked as static for the following reasons:",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-2325",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S3260": {
+          "id": "S3260",
+          "shortDescription": "Non-derived \"private\" classes and records should be \"sealed\"",
+          "fullDescription": "Classes and records with either private or file access modifiers aren’t visible outside of their assemblies or files, so if they’re not extended inside their scope, they should be made explicitly non-extensible with the addition of the sealed keyword.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-3260",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S3267": {
+          "id": "S3267",
+          "shortDescription": "Loops should be simplified with \"LINQ\" expressions",
+          "fullDescription": "Using explicit loops for filtering, selecting, or aggregating elements can make code more verbose and harder to read. LINQ expressions provide a more concise and expressive way to perform these operations, improving code clarity and maintainability.",
+          "defaultLevel": "warning",
+          "helpUri": "https://rules.sonarsource.com/csharp/RSPEC-3267",
+          "properties": {
+            "category": "Minor Code Smell",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

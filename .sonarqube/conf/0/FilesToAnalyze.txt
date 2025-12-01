@@ -1,0 +1,2 @@
+﻿D:\Самоучка\3 курс 1 семестр\Кросплатформа\лаба5\SourceGenerator\ApiGenerator.cs
+D:\Самоучка\3 курс 1 семестр\Кросплатформа\лаба5\SourceGenerator\README.md

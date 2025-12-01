@@ -1,0 +1,1 @@
+�R�D:\Самоучка\3 курс 1 семестр\Кросплатформа\лаба5\SourceGenerator\Medical_center.SourceGenerator.csproj�netstandard2.0�CSharp12
