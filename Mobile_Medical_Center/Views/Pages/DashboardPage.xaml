@@ -1,51 +1,96 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:microcharts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
              x:Class="Mobile_Medical_Center.Views.Pages.DashboardPage"
              Title="Панель управління">
 
-    <VerticalStackLayout Padding="20" Spacing="15">
-        <Label Text="Статистика" FontSize="24" FontAttributes="Bold"/>
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            <Label Text="Статистика" FontSize="24" FontAttributes="Bold"/>
 
-        <!-- Stats Grid -->
-        <Grid ColumnDefinitions="*,*" ColumnSpacing="10" RowSpacing="10">
-            <!-- Total Doctors -->
-            <Frame Grid.Column="0" CornerRadius="10" Padding="15" HasShadow="True">
-                <VerticalStackLayout Spacing="5">
-                    <Label Text="Лікарів" FontSize="12"/>
-                    <Label Text="{Binding TotalDoctors}" FontSize="20" FontAttributes="Bold"/>
+            <!-- Stats Grid -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10" RowSpacing="10">
+                <!-- Total Doctors -->
+                <Frame Grid.Column="0" Grid.Row="0" CornerRadius="10" Padding="15" HasShadow="True"
+                       BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark=#6A4FBF}">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Лікарів" FontSize="12" TextColor="White"/>
+                        <Label Text="{Binding TotalDoctors}" FontSize="20" FontAttributes="Bold" TextColor="White"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Total Patients -->
+                <Frame Grid.Column="1" Grid.Row="0" CornerRadius="10" Padding="15" HasShadow="True"
+                       BackgroundColor="{AppThemeBinding Light=#2196F3, Dark=#1976D2}">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Пацієнтів" FontSize="12" TextColor="White"/>
+                        <Label Text="{Binding TotalPatients}" FontSize="20" FontAttributes="Bold" TextColor="White"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Total Appointments -->
+                <Frame Grid.Column="0" Grid.Row="1" CornerRadius="10" Padding="15" HasShadow="True"
+                       BackgroundColor="{AppThemeBinding Light=#4CAF50, Dark=#388E3C}">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Всього записів" FontSize="12" TextColor="White"/>
+                        <Label Text="{Binding TotalAppointments}" FontSize="20" FontAttributes="Bold" TextColor="White"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Completed -->
+                <Frame Grid.Column="1" Grid.Row="1" CornerRadius="10" Padding="15" HasShadow="True"
+                       BackgroundColor="{AppThemeBinding Light=#FF9800, Dark=#F57C00}">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Виконаних" FontSize="12" TextColor="White"/>
+                        <Label Text="{Binding CompletedAppointments}" FontSize="20" FontAttributes="Bold" TextColor="White"/>
+                    </VerticalStackLayout>
+                </Frame>
+            </Grid>
+
+            <!-- Appointment Status Chart -->
+            <Frame CornerRadius="10" Padding="15" HasShadow="True"
+                   BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark=#2C2C2C}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Статуси записів" FontSize="18" FontAttributes="Bold"/>
+
+                    <microcharts:ChartView Chart="{Binding AppointmentStatusChart}"
+                                          HeightRequest="250"/>
+
+                    <!-- Status Summary -->
+                    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="10" RowSpacing="5">
+                        <BoxView Grid.Row="0" Grid.Column="0" Color="#2196F3" WidthRequest="20" HeightRequest="20" CornerRadius="3"/>
+                        <Label Grid.Row="0" Grid.Column="1" Text="{Binding ScheduledAppointments, StringFormat='Запланований: {0}'}"
+                               FontSize="14" VerticalOptions="Center"/>
+
+                        <BoxView Grid.Row="1" Grid.Column="0" Color="#4CAF50" WidthRequest="20" HeightRequest="20" CornerRadius="3"/>
+                        <Label Grid.Row="1" Grid.Column="1" Text="{Binding CompletedAppointments, StringFormat='Виконаний: {0}'}"
+                               FontSize="14" VerticalOptions="Center"/>
+
+                        <BoxView Grid.Row="2" Grid.Column="0" Color="#F44336" WidthRequest="20" HeightRequest="20" CornerRadius="3"/>
+                        <Label Grid.Row="2" Grid.Column="1" Text="{Binding CanceledAppointments, StringFormat='Скасований: {0}'}"
+                               FontSize="14" VerticalOptions="Center"/>
+                    </Grid>
                 </VerticalStackLayout>
             </Frame>
 
-            <!-- Total Patients -->
-            <Frame Grid.Column="1" CornerRadius="10" Padding="15" HasShadow="True">
-                <VerticalStackLayout Spacing="5">
-                    <Label Text="Пацієнтів" FontSize="12"/>
-                    <Label Text="{Binding TotalPatients}" FontSize="20" FontAttributes="Bold"/>
+            <!-- Appointments by Doctor Chart -->
+            <Frame CornerRadius="10" Padding="15" HasShadow="True"
+                   BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark=#2C2C2C}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Записи по лікарях" FontSize="18" FontAttributes="Bold"/>
+
+                    <microcharts:ChartView Chart="{Binding AppointmentsByDoctorChart}"
+                                          HeightRequest="300"/>
                 </VerticalStackLayout>
             </Frame>
 
-            <!-- Total Appointments -->
-            <Frame Grid.Column="0" CornerRadius="10" Padding="15" HasShadow="True">
-                <VerticalStackLayout Spacing="5">
-                    <Label Text="Записів" FontSize="12"/>
-                    <Label Text="{Binding TotalAppointments}" FontSize="20" FontAttributes="Bold"/>
-                </VerticalStackLayout>
-            </Frame>
-
-            <!-- Completed -->
-            <Frame Grid.Column="1" CornerRadius="10" Padding="15" HasShadow="True">
-                <VerticalStackLayout Spacing="5">
-                    <Label Text="Виконаних" FontSize="12"/>
-                    <Label Text="{Binding CompletedAppointments}" FontSize="20" FontAttributes="Bold"/>
-                </VerticalStackLayout>
-            </Frame>
-        </Grid>
-
-        <!-- Loading Indicator -->
-        <ActivityIndicator IsRunning="{Binding IsLoading}"
-                          IsVisible="{Binding IsLoading}"
-                          Margin="0,20"/>
-    </VerticalStackLayout>
+            <!-- Loading Indicator -->
+            <ActivityIndicator IsRunning="{Binding IsLoading}"
+                              IsVisible="{Binding IsLoading}"
+                              Color="{StaticResource Primary}"
+                              Margin="0,20"/>
+        </VerticalStackLayout>
+    </ScrollView>
 
 </ContentPage>

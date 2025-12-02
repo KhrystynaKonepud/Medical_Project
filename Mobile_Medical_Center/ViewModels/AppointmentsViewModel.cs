@@ -14,7 +14,7 @@ namespace Mobile_Medical_Center.ViewModels
         private Appointment _selectedAppointment;
         private Doctor _selectedDoctor;
         private Patient _selectedPatient;
-        private DateTime _appointmentDate = DateTime.Now.AddDays(1);
+        private DateTime _date = DateTime.Now.AddDays(1);
         private string _reason = "";
         private readonly IDatabaseService _databaseService;
 
@@ -54,10 +54,10 @@ namespace Mobile_Medical_Center.ViewModels
             set => SetProperty(ref _selectedPatient, value);
         }
 
-        public DateTime AppointmentDate
+        public DateTime Date
         {
-            get => _appointmentDate;
-            set => SetProperty(ref _appointmentDate, value);
+            get => _date;
+            set => SetProperty(ref _date, value);
         }
 
         public string Reason
@@ -123,9 +123,9 @@ namespace Mobile_Medical_Center.ViewModels
                 {
                     DoctorId = SelectedDoctor.Id,
                     PatientId = SelectedPatient.Id,
-                    AppointmentDate = AppointmentDate,
+                    Date = Date,
                     Reason = Reason,
-                    Status = "Scheduled"
+                    Status = AppointmentStatus.Scheduled
                 };
 
                 await _databaseService.AddAppointmentAsync(appointment);
@@ -133,7 +133,7 @@ namespace Mobile_Medical_Center.ViewModels
                 SelectedDoctor = null;
                 SelectedPatient = null;
                 Reason = "";
-                AppointmentDate = DateTime.Now.AddDays(1);
+                Date = DateTime.Now.AddDays(1);
 
                 await LoadAppointments();
                 await Application.Current.MainPage.DisplayAlert("Успіх", "Запис на прийом зроблено", "OK");
@@ -189,8 +189,8 @@ namespace Mobile_Medical_Center.ViewModels
                 IsLoading = true;
                 try
                 {
-                    appointment.Status = action == "Запланований" ? "Scheduled" :
-                                        action == "Виконаний" ? "Completed" : "Canceled";
+                    appointment.Status = action == "Запланований" ? AppointmentStatus.Scheduled :
+                                        action == "Виконаний" ? AppointmentStatus.Completed : AppointmentStatus.Canceled;
 
                     await _databaseService.UpdateAppointmentAsync(appointment);
                     await LoadAppointments();

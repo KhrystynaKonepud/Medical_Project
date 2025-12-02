@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Mobile_Medical_Center.Services;
 using Mobile_Medical_Center.Views.Pages;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace Mobile_Medical_Center
 {
@@ -30,6 +31,7 @@ namespace Mobile_Medical_Center
             {
                 builder
                     .UseMauiApp<App>()
+                    .UseSkiaSharp()
                     .ConfigureFonts(fonts =>
                     {
                         fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

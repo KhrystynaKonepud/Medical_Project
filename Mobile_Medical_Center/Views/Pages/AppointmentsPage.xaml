@@ -19,7 +19,7 @@
                     ItemDisplayBinding="{Binding FullName}"
                     SelectedItem="{Binding SelectedPatient}"/>
 
-            <DatePicker Date="{Binding AppointmentDate}"/>
+            <DatePicker Date="{Binding Date}"/>
 
             <Entry Placeholder="Причина візиту" Text="{Binding Reason}"/>
 
@@ -44,10 +44,10 @@
                                     Margin="0,0,0,1">
                             <Label Text="{Binding Doctor.FullName}" FontAttributes="Bold" FontSize="16"/>
                             <Label Text="{Binding Patient.FullName}" FontSize="14" TextColor="{StaticResource Gray500}"/>
-                            <Label Text="{Binding AppointmentDate, StringFormat='Дата: {0:dd.MM.yyyy HH:mm}'}" FontSize="12"/>
+                            <Label Text="{Binding Date, StringFormat='Дата: {0:dd.MM.yyyy HH:mm}'}" FontSize="12"/>
                             <Label Text="{Binding Reason, StringFormat='Причина: {0}'}" FontSize="12"/>
                             <StackLayout Orientation="Horizontal" Spacing="10">
-                                <Label Text="{Binding Status}" FontSize="12" FontAttributes="Bold"/>
+                                <Label Text="{Binding Status, Converter={StaticResource AppointmentStatusConverter}}" FontSize="12" FontAttributes="Bold"/>
                                 <Button Text="Змінити статус"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ChangeStatusCommand}"
                                         CommandParameter="{Binding .}"
